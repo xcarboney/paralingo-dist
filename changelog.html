@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Changelog — Paralingo</title>
+  <meta name="description" content="Every release of Paralingo, and what changed. Organized by version, dated.">
+  <meta name="theme-color" content="#05080B" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="canonical" href="https://paralingo.app/changelog.html" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/tokens.css">
+  <link rel="stylesheet" href="/shared/base.css">
+  <link rel="stylesheet" href="/shared/motion.css">
+  <link rel="stylesheet" href="/_shared/legal.css">
+</head>
+<body>
+
+<nav class="top">
+  <div class="container">
+    <div class="row">
+      <a class="brand" href="/">
+        <div class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+        </div>
+        <span>Paralingo</span>
+      </a>
+      <div class="links">
+        <a href="/#features">Features</a>
+        <a href="/#showcase">Showcase</a>
+        <a href="/#pricing">Pricing</a>
+        <a href="/#faq">FAQ</a>
+        <a class="cta" href="/#download">Download</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<section class="legal-page">
+  <div class="container">
+    <a class="back-link" href="/">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Back to Paralingo
+    </a>
+
+    <div class="legal-header">
+      <span class="eyebrow">Changelog</span>
+      <h1>What's <span class="grad">new &amp; fixed.</span></h1>
+      <p class="sub">Every release, every meaningful change. Shipping features and tightening screws.</p>
+      <div class="meta">Currently shipping · v0.1</div>
+    </div>
+
+    <div class="legal-body" style="padding-top: 24px;">
+      <ul class="changelog-list">
+
+        <!-- v0.1 — tonight's marathon -->
+        <li class="changelog-entry">
+                    <div class="version">
+            <span class="v">v0.1</span>
+            <span class="date">April 22, 2026 · Early access launch</span>
+          </div>
+          <h2>Speak any language. Paste any language.</h2>
+          <ul>
+            <li><span class="tag new">New</span><span>Voice-to-text dictation powered by WhisperKit (Large v3 Turbo) running on the Neural Engine — 99 source languages.</span></li>
+            <li><span class="tag new">New</span><span>On-device translation via Apple's Translation framework — 22 target languages, offline after first download.</span></li>
+            <li><span class="tag new">New</span><span>Hold-to-speak hotkey (default ⌥). Release, and the translated text pastes at your cursor anywhere on macOS.</span></li>
+            <li><span class="tag new">New</span><span>Menu-bar language picker with source + target pills, single-tap swap button, auto-detect source via Whisper.</span></li>
+            <li><span class="tag new">New</span><span>Skip-when-same toggle — speak in your target language and the transcript passes through untouched.</span></li>
+            <li><span class="tag new">New</span><span>Onboarding with a dedicated language-pair setup step.</span></li>
+            <li><span class="tag new">New</span><span>Settings → Translation tab with live "Try it" panel, status indicator (ready / downloading / not-available), and skip-when-same toggle.</span></li>
+            <li><span class="tag new">New</span><span>Searchable local history — stores the original transcript, the pasted translation, and the language pair per entry.</span></li>
+            <li><span class="tag new">New</span><span>Recording overlay with 10 visual styles (from Paravoice's overlay gallery).</span></li>
+            <li><span class="tag new">New</span><span>Headless self-test mode (<code>--smoke-test</code>) that validates the whole pipeline end-to-end in about 13 seconds.</span></li>
+          </ul>
+        </li>
+
+        <!-- Seed entry for the roadmap -->
+        <li class="changelog-entry">
+                    <div class="version">
+            <span class="v">Coming</span>
+            <span class="date">Roadmap</span>
+          </div>
+          <h2>On the workbench.</h2>
+          <ul>
+            <li><span class="tag new">Plan</span><span>Live translated preview in the recording overlay (stream-decode Whisper as you speak).</span></li>
+            <li><span class="tag new">Plan</span><span>Language pack manager — one-click download / delete any of the 22 pairs.</span></li>
+            <li><span class="tag new">Plan</span><span>Custom glossary so names and jargon translate the way you want.</span></li>
+            <li><span class="tag new">Plan</span><span>Per-app target-language rules (Slack in English, WeChat in Chinese).</span></li>
+            <li><span class="tag new">Plan</span><span>Mac App Store release with MAS-safe capture path.</span></li>
+            <li><span class="tag new">Plan</span><span>Broader macOS 15 support once Apple backports the programmatic Translation API.</span></li>
+          </ul>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container row">
+    <div>
+      <a class="brand" href="/" style="font-size:14px; color: var(--text-hi); text-decoration:none; font-weight:700;">Paralingo</a>
+      <span style="margin-left:12px;">· Built by ParaApp</span>
+    </div>
+    <div>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+      <a href="/changelog.html">Changelog</a>
+      <a href="https://paravoice.ai">Paravoice</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

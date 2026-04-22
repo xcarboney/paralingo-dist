@@ -78,3 +78,10 @@
     radial-gradient(50% 40% at 90% 100%, rgba(34,211,238,0.14), transparent 60%);
   z-index: 0;
 }
+
+/* Aliases so shared legal.css (reused from ParaScreen) still resolves */
+:root {
+  --teal-500: var(--emerald-500);
+  --teal-400: var(--emerald-400);
+  --teal-300: var(--emerald-300);
+}
