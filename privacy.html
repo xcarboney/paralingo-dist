@@ -87,7 +87,7 @@
       <ul>
         <li><strong>Audio capture</strong> — <a href="https://developer.apple.com/documentation/avfoundation/avaudioengine">AVAudioEngine</a> reads your microphone into a local buffer. Audio is written to a temporary WAV on disk and deleted after transcription.</li>
         <li><strong>Transcription</strong> — <a href="https://github.com/argmaxinc/WhisperKit">WhisperKit</a> runs OpenAI's Whisper Large v3 Turbo on the Apple Neural Engine. The model is downloaded once to <code>~/Documents/huggingface/</code> and then runs offline. No audio leaves your Mac.</li>
-        <li><strong>Translation</strong> — <a href="https://developer.apple.com/documentation/translation">Apple Translation</a> provides neural translation between 22 target languages. The first time you pick a language pair, macOS downloads a ~60 MB model; after that, translation runs entirely locally.</li>
+        <li><strong>Translation</strong> — <a href="https://developer.apple.com/documentation/translation">Apple Translation</a> provides neural translation between 20 target languages. The first time you pick a language pair, macOS downloads a ~60 MB model; after that, translation runs entirely locally.</li>
         <li><strong>Text cleanup</strong> — optional smart capitalization, punctuation, and filler-word trimming. Pure string transforms, no network.</li>
         <li><strong>Paste</strong> — synthesizes a <code>⌘V</code> keystroke into the focused app via <code>CGEvent</code>. Requires macOS Accessibility permission.</li>
       </ul>
