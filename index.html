@@ -454,88 +454,113 @@
       position: relative;
       padding: 80px 0;
     }
-    /* Try-it bar */
-    .lang-try {
-      max-width: 640px; margin: 0 auto 28px;
-      display: flex; align-items: center; gap: 10px;
-      padding: 8px 10px 8px 14px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--glass-stroke);
-      backdrop-filter: blur(8px);
-    }
-    .lang-try svg { width: 16px; height: 16px; color: var(--emerald-400); flex-shrink: 0; }
-    .lang-try input {
-      flex: 1; background: transparent; border: 0; outline: 0;
-      color: var(--text-hi); font: inherit; font-size: 15px; padding: 8px 4px;
-      caret-color: #EC4899;
-    }
-    .lang-try input::placeholder { color: var(--text-lo); }
-    .lang-try .hint {
-      font-family: var(--font-mono); font-size: 11px; color: var(--text-lo);
-      padding: 4px 10px; border-radius: 999px;
-      background: rgba(139,92,246,0.12);
-      border: 1px solid rgba(139,92,246,0.25);
-    }
-
-    /* 3D flip grid */
-    .lang-grid {
-      display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px;
-      max-width: 860px; margin: 0 auto;
-      perspective: 900px;
-    }
-    @media (max-width: 820px) { .lang-grid { grid-template-columns: repeat(4, 1fr); } }
-    @media (max-width: 420px) { .lang-grid { grid-template-columns: repeat(3, 1fr); } }
-    .lang-pill {
+    /* ===== 3D language globe ===== */
+    .lang-stage {
       position: relative;
-      aspect-ratio: 1.15 / 1;
-      border: 0; background: transparent;
-      cursor: pointer;
-      transform-style: preserve-3d;
-      transition: transform 600ms var(--ease-out);
-      padding: 0;
+      width: 100%; max-width: 960px; margin: 0 auto;
+      height: 560px;
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
     }
-    .lang-pill .face {
-      position: absolute; inset: 0;
-      border-radius: 14px;
+    .lang-stage.dragging { cursor: grabbing; }
+    .lang-stage canvas { display: block; width: 100%; height: 100%; }
+    .lang-stage .css3d { position: absolute; inset: 0; pointer-events: none; }
+    .lang-stage .css3d > div { pointer-events: auto; }
+    .lang-stage::before {
+      content: '';
+      position: absolute; inset: -20% -10%;
+      background:
+        radial-gradient(40% 40% at 50% 50%, rgba(139,92,246,0.18), transparent 70%),
+        radial-gradient(30% 25% at 70% 60%, rgba(236,72,153,0.14), transparent 70%);
+      filter: blur(20px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .lang-node {
+      width: 112px; height: 112px;
+      border-radius: 18px;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       padding: 10px 8px;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--glass-stroke);
-      transition: border-color 280ms var(--ease-out), background 280ms var(--ease-out), box-shadow 280ms var(--ease-out);
+      background: rgba(10,10,18,0.72);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.10);
+      cursor: pointer;
+      transition: border-color 240ms var(--ease-out), box-shadow 240ms var(--ease-out), background 240ms var(--ease-out);
+      will-change: transform;
     }
-    .lang-pill .face.back {
-      transform: rotateY(180deg);
-      background: linear-gradient(135deg, rgba(139,92,246,0.25), rgba(236,72,153,0.20));
-      border-color: rgba(236,72,153,0.45);
-      color: var(--text-hi);
-      font-size: 12px; line-height: 1.25;
+    .lang-node .flag { font-size: 34px; line-height: 1; display: block; }
+    .lang-node .name {
+      margin-top: 6px;
+      font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-mid); font-weight: 600; text-align: center;
+    }
+    .lang-node:hover,
+    .lang-node.hot {
+      border-color: rgba(167,139,250,0.6);
+      box-shadow: 0 12px 40px rgba(139,92,246,0.45), 0 0 0 1px rgba(236,72,153,0.3) inset;
+      background: rgba(24,16,40,0.85);
+    }
+    .lang-node.active {
+      border-color: rgba(236,72,153,0.8);
+      box-shadow: 0 0 0 2px rgba(236,72,153,0.55), 0 18px 60px rgba(236,72,153,0.45);
+    }
+
+    /* Readout card below the sphere */
+    .lang-readout {
+      max-width: 720px; margin: 20px auto 0;
+      padding: 18px 22px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(139,92,246,0.10), rgba(236,72,153,0.06));
+      border: 1px solid rgba(139,92,246,0.25);
+      backdrop-filter: blur(8px);
+      display: grid; grid-template-columns: auto 1fr auto;
+      gap: 16px; align-items: center;
+      opacity: 0; transform: translateY(8px);
+      transition: opacity 350ms var(--ease-out), transform 350ms var(--ease-out);
+    }
+    .lang-readout.on { opacity: 1; transform: none; }
+    .lang-readout .rflag { font-size: 34px; }
+    .lang-readout .rtext {
+      font-size: 16px; font-weight: 600; color: var(--text-hi); line-height: 1.35;
+    }
+    .lang-readout .rname {
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--text-lo); margin-bottom: 2px;
+    }
+    .lang-readout .rlabel { display: flex; flex-direction: column; }
+    .lang-readout .rtry {
+      font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,0.85);
+      padding: 8px 14px; border-radius: 999px;
+      background: linear-gradient(135deg, #8B5CF6, #EC4899);
+      border: 0; cursor: pointer;
+      box-shadow: 0 8px 20px rgba(236,72,153,0.35);
+      transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+    }
+    .lang-readout .rtry:hover { transform: translateY(-1px); box-shadow: 0 12px 28px rgba(236,72,153,0.5); }
+    .lang-readout .rtry:active { transform: translateY(0); }
+    .lang-hint {
       text-align: center;
-      padding: 10px 10px;
-      box-shadow: 0 10px 30px rgba(139,92,246,0.25);
+      margin-top: 16px;
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--text-lo);
     }
-    .lang-pill:hover,
-    .lang-pill:focus-visible { transform: rotateY(180deg); }
-    .lang-pill:hover .face.front,
-    .lang-pill:focus-visible .face.front {
-      border-color: rgba(167,139,250,0.5);
-      box-shadow: 0 10px 28px rgba(139,92,246,0.28);
+    .lang-hint .kbd {
+      display: inline-block;
+      padding: 2px 8px;
+      margin: 0 4px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--text-mid);
+      letter-spacing: 0;
+      font-size: 10px;
     }
-    .lang-pill.active .face.front {
-      border-color: rgba(236,72,153,0.55);
-      background: rgba(236,72,153,0.08);
-      box-shadow: 0 0 0 1px rgba(236,72,153,0.55), 0 14px 30px rgba(236,72,153,0.25);
-    }
-    .lang-pill .flag { font-size: 30px; display: block; line-height: 1; margin-bottom: 6px; }
-    .lang-pill .name { font-size: 11px; color: var(--text-mid); font-weight: 500; }
-    .lang-pill .sample { font-weight: 600; letter-spacing: -0.01em; }
-    .lang-pill .tap { margin-top: 6px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.6); }
-    @media (prefers-reduced-motion: reduce) {
-      .lang-pill { transition: none; }
-      .lang-pill:hover { transform: none; }
-      .lang-pill .face.back { transform: none; opacity: 0; pointer-events: none; }
+    @media (max-width: 720px) {
+      .lang-stage { height: 480px; }
+      .lang-node { width: 92px; height: 92px; }
+      .lang-node .flag { font-size: 28px; }
     }
 
     /* ===== Privacy section ===== */
@@ -1059,14 +1084,25 @@
     <h3 class="section-title">Paste into the language <span class="grad">your audience actually reads.</span></h3>
     <p class="section-sub">Input via Whisper covers 99 source languages. Output via Apple Translation covers these 20, with more added every macOS release.</p>
 
-    <!-- Interactive try-it bar: hover a flag to see this phrase translated, click to jump to the live demo. -->
-    <div class="lang-try reveal" role="presentation">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
-      <input id="langTryInput" type="text" value="Can you send me the report before the meeting tomorrow?" spellcheck="false" aria-label="Sample phrase for the language preview" />
-      <span class="hint">Hover a flag</span>
+    <!-- 3D language sphere: drag to rotate, click a flag to see the live translation. -->
+    <div class="lang-stage reveal" id="langStage" aria-label="Drag to rotate the language sphere; click a flag to preview a translation">
+      <div class="css3d" id="langCss3d"></div>
     </div>
 
-    <div class="lang-grid reveal" id="langGrid"></div>
+    <div class="lang-readout" id="langReadout" aria-live="polite">
+      <span class="rflag" id="rflag">🇪🇸</span>
+      <div class="rlabel">
+        <span class="rname" id="rname">Spanish</span>
+        <span class="rtext" id="rtext">¡Pasa el ratón por los países!</span>
+      </div>
+      <button class="rtry" id="rtry" type="button">Try in demo ↑</button>
+    </div>
+
+    <p class="lang-hint">
+      <span class="kbd">drag</span> to rotate ·
+      <span class="kbd">hover</span> a flag to preview ·
+      <span class="kbd">click</span> to try it live
+    </p>
   </div>
 </section>
 
@@ -1340,7 +1376,7 @@
     });
   })();
 
-  // ========== Interactive language grid ==========
+  // ========== Interactive language SPHERE (Three.js CSS3DRenderer) ==========
   (function(){
     const LANGS = [
       { code: 'en', name: 'English',     flag: '\u{1F1FA}\u{1F1F8}', samples: {
@@ -1425,73 +1461,200 @@
       }}
     ];
 
-    const grid  = document.getElementById('langGrid');
-    const input = document.getElementById('langTryInput');
-    if (!grid) return;
+    const stage   = document.getElementById('langStage');
+    const host    = document.getElementById('langCss3d');
+    const readout = document.getElementById('langReadout');
+    const rflag   = document.getElementById('rflag');
+    const rname   = document.getElementById('rname');
+    const rtext   = document.getElementById('rtext');
+    const rtry    = document.getElementById('rtry');
+    if (!stage || !host) return;
 
-    const pickSample = (L) => {
-      const v = (input && input.value || '').toLowerCase();
-      if (v.includes('report') || v.includes('meeting') || v.length > 30) return L.samples.report;
-      return L.samples.default;
-    };
+    // Respect reduced-motion: fall back to a static centered flag grid.
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Build pills
-    const html = LANGS.map((L, i) => `
-      <button class="lang-pill" type="button" data-code="${L.code}" aria-label="Preview ${L.name} translation">
-        <div class="face front">
-          <span class="flag" aria-hidden="true">${L.flag}</span>
-          <span class="name">${L.name}</span>
-        </div>
-        <div class="face back">
-          <span class="sample" data-role="sample">${pickSample(L)}</span>
-          <span class="tap">Click \u2192 Try</span>
-        </div>
-      </button>
-    `).join('');
-    grid.innerHTML = html;
+    // Load Three.js + CSS3DRenderer via ESM (no build step required)
+    const THREE_URL  = 'https://unpkg.com/three@0.160.0/build/three.module.js';
+    const CSS3D_URL  = 'https://unpkg.com/three@0.160.0/examples/jsm/renderers/CSS3DRenderer.js';
 
-    // Re-fill samples whenever the user edits the input
-    const refill = () => {
-      grid.querySelectorAll('.lang-pill').forEach((pill, i) => {
-        const L = LANGS[i];
-        const s = pill.querySelector('[data-role=sample]');
-        if (s) s.textContent = pickSample(L);
-      });
-    };
-    input && input.addEventListener('input', refill);
-
-    // Click a pill -> jump hero demo to that target language
-    grid.addEventListener('click', (ev) => {
-      const btn = ev.target.closest('.lang-pill');
-      if (!btn) return;
-      const code = btn.dataset.code;
-      grid.querySelectorAll('.lang-pill').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      if (window.__paraDemo) window.__paraDemo.focusPair('en', code);
-    });
-
-    // Subtle idle animation: pulse one random flag every 3s until user interacts.
-    let interacted = false;
-    const markInteracted = () => { interacted = true; };
-    grid.addEventListener('pointerenter', markInteracted, { once: true });
-    grid.addEventListener('click', markInteracted, { once: true });
-
-    (function idlePulse(){
-      if (interacted) return;
-      const pills = grid.querySelectorAll('.lang-pill');
-      if (pills.length) {
-        const p = pills[Math.floor(Math.random() * pills.length)];
-        const f = p.querySelector('.face.front');
-        if (f) {
-          f.animate([
-            { boxShadow: '0 0 0 rgba(139,92,246,0)' },
-            { boxShadow: '0 0 22px rgba(139,92,246,0.55)' },
-            { boxShadow: '0 0 0 rgba(139,92,246,0)' }
-          ], { duration: 1200, easing: 'ease-out' });
-        }
+    (async () => {
+      let THREE, CSS3DObject, CSS3DRenderer;
+      try {
+        THREE = await import(THREE_URL);
+        const css = await import(CSS3D_URL);
+        CSS3DObject = css.CSS3DObject;
+        CSS3DRenderer = css.CSS3DRenderer;
+      } catch (err) {
+        // Fallback: plain flex grid
+        console.warn('Three.js failed, falling back to static grid:', err);
+        buildFallback();
+        return;
       }
-      setTimeout(idlePulse, 2400);
+
+      const W = () => stage.clientWidth;
+      const H = () => stage.clientHeight;
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(55, W()/H(), 0.1, 4000);
+      camera.position.z = 900;
+
+      const renderer = new CSS3DRenderer();
+      renderer.setSize(W(), H());
+      renderer.domElement.style.position = 'absolute';
+      renderer.domElement.style.inset = '0';
+      host.appendChild(renderer.domElement);
+
+      // Fibonacci sphere distribution so flags are evenly spaced
+      const RADIUS = 280;
+      const N = LANGS.length;
+      const golden = Math.PI * (3 - Math.sqrt(5));
+      const group = new THREE.Group();
+      scene.add(group);
+
+      const nodes = LANGS.map((L, i) => {
+        const y = 1 - (i / (N - 1)) * 2;      // -1..1
+        const r = Math.sqrt(1 - y*y);
+        const phi = golden * i;
+        const x = Math.cos(phi) * r;
+        const z = Math.sin(phi) * r;
+
+        const el = document.createElement('div');
+        el.className = 'lang-node';
+        el.dataset.code = L.code;
+        el.setAttribute('role', 'button');
+        el.setAttribute('aria-label', `${L.name} — click to preview translation`);
+        el.innerHTML = `<span class="flag" aria-hidden="true">${L.flag}</span><span class="name">${L.name}</span>`;
+
+        const obj = new CSS3DObject(el);
+        obj.position.set(x * RADIUS, y * RADIUS, z * RADIUS);
+        group.add(obj);
+
+        el.addEventListener('pointerenter', () => {
+          el.classList.add('hot');
+          showReadout(L);
+        });
+        el.addEventListener('pointerleave', () => el.classList.remove('hot'));
+        el.addEventListener('click', () => {
+          host.querySelectorAll('.lang-node.active').forEach(n => n.classList.remove('active'));
+          el.classList.add('active');
+          showReadout(L, true);
+          if (window.__paraDemo) window.__paraDemo.focusPair('en', L.code);
+        });
+
+        return { el, obj, lang: L };
+      });
+
+      // Auto-rotate + drag
+      let autoRot = reduceMotion ? 0 : 0.0018;   // rad / frame
+      let rotX = 0, rotY = 0;
+      let velX = 0, velY = autoRot;
+      let dragging = false;
+      let lastPointer = null;
+
+      stage.addEventListener('pointerdown', (ev) => {
+        dragging = true;
+        stage.classList.add('dragging');
+        lastPointer = { x: ev.clientX, y: ev.clientY };
+        stage.setPointerCapture(ev.pointerId);
+        autoRot = 0; // once user drags, stop auto-spinning
+      });
+      stage.addEventListener('pointermove', (ev) => {
+        if (!dragging || !lastPointer) return;
+        const dx = ev.clientX - lastPointer.x;
+        const dy = ev.clientY - lastPointer.y;
+        velY = dx * 0.005;
+        velX = dy * 0.005;
+        rotY += velY;
+        rotX += velX;
+        rotX = Math.max(-0.9, Math.min(0.9, rotX)); // clamp vertical
+        lastPointer = { x: ev.clientX, y: ev.clientY };
+      });
+      const stopDrag = () => { dragging = false; lastPointer = null; stage.classList.remove('dragging'); };
+      stage.addEventListener('pointerup', stopDrag);
+      stage.addEventListener('pointercancel', stopDrag);
+      stage.addEventListener('pointerleave', stopDrag);
+
+      // Frame loop
+      function tick() {
+        if (!dragging) {
+          rotY += autoRot;
+          // decay inertia
+          velY *= 0.96; velX *= 0.92;
+          if (Math.abs(velY) > 0.0005) rotY += velY;
+          if (Math.abs(velX) > 0.0005) {
+            rotX = Math.max(-0.9, Math.min(0.9, rotX + velX));
+          }
+        }
+        group.rotation.y = rotY;
+        group.rotation.x = rotX;
+
+        // Scale + fade nodes based on z-depth so farther flags recede
+        nodes.forEach(n => {
+          const worldPos = n.obj.position.clone().applyMatrix4(group.matrixWorld);
+          const z = worldPos.z; // -R..R after rotation
+          const t = (z + RADIUS) / (2 * RADIUS);  // 0..1, 1=front
+          const scale = 0.55 + t * 0.55;
+          n.el.style.transform = (n.el.style.transform || '') // CSS3DObject sets matrix on parent; we scale internal
+            .replace(/ scale\([^)]*\)/, '') + ''; // no-op; keep baseline
+          n.el.style.opacity = String(0.35 + t * 0.65);
+          n.el.style.filter = t < 0.35 ? 'blur(1.5px)' : 'none';
+          n.el.style.zIndex = String(Math.round(t * 100));
+          n.obj.scale.set(scale, scale, scale);
+        });
+
+        renderer.render(scene, camera);
+        requestAnimationFrame(tick);
+      }
+      tick();
+
+      // Resize
+      const onResize = () => {
+        camera.aspect = W()/H();
+        camera.updateProjectionMatrix();
+        renderer.setSize(W(), H());
+      };
+      window.addEventListener('resize', onResize);
+
+      // Initial readout seeded with Spanish to demo
+      showReadout(LANGS.find(L => L.code === 'es'));
+
+      function showReadout(L, persist = false) {
+        if (!L || !readout) return;
+        rflag.textContent = L.flag;
+        rname.textContent = L.name;
+        rtext.textContent = L.samples.report || L.samples.default;
+        readout.classList.add('on');
+        readout.dataset.code = L.code;
+      }
+
+      rtry && rtry.addEventListener('click', () => {
+        const code = readout.dataset.code;
+        if (window.__paraDemo && code) window.__paraDemo.focusPair('en', code);
+      });
     })();
+
+    // Fallback if Three.js fails to load (e.g. network blocked)
+    function buildFallback(){
+      host.innerHTML = `
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:40px 20px;max-width:760px;margin:0 auto;pointer-events:auto;">
+          ${LANGS.map(L => `
+            <div class="lang-node" data-code="${L.code}" style="position:static;width:auto;height:auto;">
+              <span class="flag">${L.flag}</span>
+              <span class="name">${L.name}</span>
+            </div>
+          `).join('')}
+        </div>`;
+      host.querySelectorAll('.lang-node').forEach(el => {
+        const L = LANGS.find(x => x.code === el.dataset.code);
+        el.addEventListener('click', () => {
+          if (window.__paraDemo) window.__paraDemo.focusPair('en', L.code);
+          document.getElementById('rflag').textContent = L.flag;
+          document.getElementById('rname').textContent = L.name;
+          document.getElementById('rtext').textContent = L.samples.report || L.samples.default;
+          document.getElementById('langReadout').classList.add('on');
+        });
+      });
+    }
   })();
 </script>
 </body>
