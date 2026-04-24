@@ -804,39 +804,105 @@
 
     /* ===== MOBILE POLISH ===== */
     @media (max-width: 720px) {
-      .container { padding: 0 18px; }
+      .container { padding: 0 16px; }
       nav.top .row { height: 56px; }
+      nav.top .brand { font-size: 15px; }
       nav.top .cta { padding: 7px 12px; font-size: 12px; }
 
       .hero { padding: 40px 0 36px; }
       .hero h1 {
         font-size: clamp(30px, 9vw, 40px);
-        max-width: 100%;                /* override the 14ch desktop cap */
+        max-width: 100%;
         line-height: 1.08;
+        margin-bottom: 18px;
       }
-      .hero p.sub { font-size: 16px; padding: 0 4px; }
+      .hero p.sub { font-size: 16px; padding: 0 4px; margin-bottom: 28px; }
+      .hero .kicker { font-size: 11px; padding: 5px 12px; margin-bottom: 22px; }
       .hero .ctas { flex-direction: column; align-items: stretch; gap: 10px; }
       .hero .ctas .btn-primary, .hero .ctas .btn-ghost,
       .price-box .btn-primary {
         width: 100%; justify-content: center;
       }
+      .hero .meta { margin-top: 20px; gap: 12px 18px; font-size: 11.5px; }
+      .hero-demo { margin-top: 40px; }
 
-      .demo-card { padding: 18px 18px 16px; min-height: auto; }
-      .demo-card .text { font-size: 15px; min-height: 48px; }
+      .demo-card { padding: 18px 16px 14px; min-height: auto; }
+      .demo-card .text { font-size: 15px; min-height: 48px; line-height: 1.45; }
+      .demo-card .label { font-size: 9px; padding-right: 60px; }
+      .wave { right: 16px; top: 14px; width: 44px; height: 16px; }
+      .hero-demo .arrow { width: 36px; height: 36px; }
+      .hero-demo .arrow svg { width: 14px; height: 14px; }
 
-      section h3.section-title { font-size: clamp(24px, 7.5vw, 32px); }
+      section h3.section-title { font-size: clamp(24px, 7.5vw, 32px); line-height: 1.18; }
       section p.section-sub { font-size: 15px; padding: 0 4px; margin-bottom: 40px; }
 
-      section.how, section.features { padding: 72px 0 32px; }
+      section.how, section.features { padding: 64px 0 28px; }
       .how-step, .fcard { padding: 22px 18px; }
+      .fcard .icon { width: 40px; height: 40px; }
+      .fcard .icon svg { width: 20px; height: 20px; }
+      .fcard h4 { font-size: 16px; }
+      .fcard p { font-size: 13.5px; }
 
+      .privacy { padding: 72px 0 48px !important; }
       .privacy-hero h3 { font-size: clamp(26px, 8vw, 34px); }
+      .privacy-hero p { font-size: 15px; }
+      .lock-viz { width: 200px !important; height: 200px !important; margin: 0 auto; }
+
+      /* 3D language sphere on mobile: smaller stage, smaller nodes */
+      section.languages { padding: 64px 0 32px !important; }
+      .lang-stage { height: 460px; }
+      .lang-node { width: 84px; height: 84px; padding: 8px 6px; border-radius: 14px; }
+      .lang-node .flag { font-size: 28px; }
+      .lang-node .name { font-size: 9px; }
+      .lang-readout {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 10px;
+        padding: 16px 18px;
+        margin: 16px 16px 0;
+      }
+      .lang-readout .rflag { font-size: 40px; margin: 0 auto; }
+      .lang-readout .rlabel { align-items: center; }
+      .lang-readout .rtext { font-size: 15px; }
+      .lang-readout .rtry { justify-self: center; width: 100%; padding: 10px 14px; }
+      .lang-hint {
+        font-size: 10px; padding: 0 20px;
+        display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;
+      }
 
       section.pricing { padding: 72px 0 36px; }
       .price-box { padding: 28px 22px; }
       .price-box .price { font-size: 52px; }
+      .price-box ul li { font-size: 13.5px; }
 
-      footer .row { flex-direction: column; align-items: flex-start; }
+      section.faq { padding: 72px 0 48px; }
+      .faq-item summary { font-size: 15px; padding: 16px 18px; }
+      .faq-item p { font-size: 14px; padding: 0 18px 18px; }
+
+      footer { padding: 40px 0 32px; font-size: 12px; }
+      footer .row { flex-direction: column; align-items: flex-start; gap: 12px; }
+      footer .row > div:last-child {
+        display: flex; flex-wrap: wrap; gap: 14px;
+      }
+      footer a { margin-right: 0; font-size: 13px; }
+    }
+
+    /* Tiny phones – very narrow screens */
+    @media (max-width: 420px) {
+      .container { padding: 0 14px; }
+      .hero h1 { font-size: clamp(26px, 10vw, 34px); }
+      .hero .meta { gap: 8px 14px; }
+      .hero .meta span { font-size: 11px; }
+
+      .lang-stage { height: 420px; }
+      .lang-node { width: 72px; height: 72px; }
+      .lang-node .flag { font-size: 24px; }
+      .lang-node .name { display: none; }
+
+      .fgrid { gap: 12px; }
+      .fcard { padding: 18px 16px; }
+
+      .price-box .price { font-size: 44px; }
     }
   </style>
 </head>
@@ -1505,7 +1571,14 @@
       host.appendChild(renderer.domElement);
 
       // Fibonacci sphere distribution so flags are evenly spaced
-      const RADIUS = 280;
+      // Dynamic radius so the sphere scales nicely on phones.
+      const pickRadius = () => {
+        const w = W();
+        if (w <= 420) return 160;
+        if (w <= 720) return 210;
+        return 280;
+      };
+      let RADIUS = pickRadius();
       const N = LANGS.length;
       const golden = Math.PI * (3 - Math.sqrt(5));
       const group = new THREE.Group();
@@ -1607,11 +1680,23 @@
       }
       tick();
 
-      // Resize
+      // Resize — reflow sphere radius on breakpoint change
       const onResize = () => {
         camera.aspect = W()/H();
         camera.updateProjectionMatrix();
         renderer.setSize(W(), H());
+        const newR = pickRadius();
+        if (newR !== RADIUS) {
+          RADIUS = newR;
+          nodes.forEach((n, i) => {
+            const y = 1 - (i / (N - 1)) * 2;
+            const r = Math.sqrt(1 - y*y);
+            const phi = golden * i;
+            const x = Math.cos(phi) * r;
+            const z = Math.sin(phi) * r;
+            n.obj.position.set(x * RADIUS, y * RADIUS, z * RADIUS);
+          });
+        }
       };
       window.addEventListener('resize', onResize);
 
