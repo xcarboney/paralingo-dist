@@ -131,7 +131,7 @@
   min-width: 52px; text-align: center;
   margin-top: 1px;
 }
-.changelog-entry li .tag.new    { background: rgba(52,211,153,0.12); color: #34D399; border:1px solid rgba(52,211,153,0.25); }
+.changelog-entry li .tag.new    { background: rgba(167,139,250,0.14); color: #A78BFA; border:1px solid rgba(167,139,250,0.30); }
 .changelog-entry li .tag.fix    { background: rgba(245,158,11,0.12); color: #F59E0B; border:1px solid rgba(245,158,11,0.25); }
 .changelog-entry li .tag.change { background: rgba(34,211,238,0.10); color: #67E8F9; border:1px solid rgba(34,211,238,0.25); }
 .changelog-entry li .tag.remove { background: rgba(239,68,68,0.10);  color: #F87171; border:1px solid rgba(239,68,68,0.22); }
