@@ -454,27 +454,89 @@
       position: relative;
       padding: 80px 0;
     }
+    /* Try-it bar */
+    .lang-try {
+      max-width: 640px; margin: 0 auto 28px;
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 10px 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--glass-stroke);
+      backdrop-filter: blur(8px);
+    }
+    .lang-try svg { width: 16px; height: 16px; color: var(--emerald-400); flex-shrink: 0; }
+    .lang-try input {
+      flex: 1; background: transparent; border: 0; outline: 0;
+      color: var(--text-hi); font: inherit; font-size: 15px; padding: 8px 4px;
+      caret-color: #EC4899;
+    }
+    .lang-try input::placeholder { color: var(--text-lo); }
+    .lang-try .hint {
+      font-family: var(--font-mono); font-size: 11px; color: var(--text-lo);
+      padding: 4px 10px; border-radius: 999px;
+      background: rgba(139,92,246,0.12);
+      border: 1px solid rgba(139,92,246,0.25);
+    }
+
+    /* 3D flip grid */
     .lang-grid {
-      display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;
+      display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px;
       max-width: 860px; margin: 0 auto;
+      perspective: 900px;
     }
     @media (max-width: 820px) { .lang-grid { grid-template-columns: repeat(4, 1fr); } }
     @media (max-width: 420px) { .lang-grid { grid-template-columns: repeat(3, 1fr); } }
     .lang-pill {
-      padding: 14px 10px;
-      border-radius: 12px;
+      position: relative;
+      aspect-ratio: 1.15 / 1;
+      border: 0; background: transparent;
+      cursor: pointer;
+      transform-style: preserve-3d;
+      transition: transform 600ms var(--ease-out);
+      padding: 0;
+    }
+    .lang-pill .face {
+      position: absolute; inset: 0;
+      border-radius: 14px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 10px 8px;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
       background: rgba(255,255,255,0.03);
       border: 1px solid var(--glass-stroke);
+      transition: border-color 280ms var(--ease-out), background 280ms var(--ease-out), box-shadow 280ms var(--ease-out);
+    }
+    .lang-pill .face.back {
+      transform: rotateY(180deg);
+      background: linear-gradient(135deg, rgba(139,92,246,0.25), rgba(236,72,153,0.20));
+      border-color: rgba(236,72,153,0.45);
+      color: var(--text-hi);
+      font-size: 12px; line-height: 1.25;
       text-align: center;
-      transition: all var(--dur-fast);
+      padding: 10px 10px;
+      box-shadow: 0 10px 30px rgba(139,92,246,0.25);
     }
-    .lang-pill:hover {
-      transform: translateY(-2px);
-      border-color: var(--emerald-400);
-      background: rgba(139,92,246,0.06);
+    .lang-pill:hover,
+    .lang-pill:focus-visible { transform: rotateY(180deg); }
+    .lang-pill:hover .face.front,
+    .lang-pill:focus-visible .face.front {
+      border-color: rgba(167,139,250,0.5);
+      box-shadow: 0 10px 28px rgba(139,92,246,0.28);
     }
-    .lang-pill .flag { font-size: 28px; display: block; margin-bottom: 4px; }
-    .lang-pill .name { font-size: 11px; color: var(--text-mid); }
+    .lang-pill.active .face.front {
+      border-color: rgba(236,72,153,0.55);
+      background: rgba(236,72,153,0.08);
+      box-shadow: 0 0 0 1px rgba(236,72,153,0.55), 0 14px 30px rgba(236,72,153,0.25);
+    }
+    .lang-pill .flag { font-size: 30px; display: block; line-height: 1; margin-bottom: 6px; }
+    .lang-pill .name { font-size: 11px; color: var(--text-mid); font-weight: 500; }
+    .lang-pill .sample { font-weight: 600; letter-spacing: -0.01em; }
+    .lang-pill .tap { margin-top: 6px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.6); }
+    @media (prefers-reduced-motion: reduce) {
+      .lang-pill { transition: none; }
+      .lang-pill:hover { transform: none; }
+      .lang-pill .face.back { transform: none; opacity: 0; pointer-events: none; }
+    }
 
     /* ===== Privacy section ===== */
     section.privacy {
@@ -997,28 +1059,14 @@
     <h3 class="section-title">Paste into the language <span class="grad">your audience actually reads.</span></h3>
     <p class="section-sub">Input via Whisper covers 99 source languages. Output via Apple Translation covers these 20, with more added every macOS release.</p>
 
-    <div class="lang-grid reveal">
-      <div class="lang-pill"><span class="flag">🇺🇸</span><span class="name">English</span></div>
-      <div class="lang-pill"><span class="flag">🇪🇸</span><span class="name">Spanish</span></div>
-      <div class="lang-pill"><span class="flag">🇫🇷</span><span class="name">French</span></div>
-      <div class="lang-pill"><span class="flag">🇩🇪</span><span class="name">German</span></div>
-      <div class="lang-pill"><span class="flag">🇮🇹</span><span class="name">Italian</span></div>
-      <div class="lang-pill"><span class="flag">🇧🇷</span><span class="name">Portuguese</span></div>
-      <div class="lang-pill"><span class="flag">🇳🇱</span><span class="name">Dutch</span></div>
-      <div class="lang-pill"><span class="flag">🇵🇱</span><span class="name">Polish</span></div>
-      <div class="lang-pill"><span class="flag">🇷🇺</span><span class="name">Russian</span></div>
-      <div class="lang-pill"><span class="flag">🇺🇦</span><span class="name">Ukrainian</span></div>
-      <div class="lang-pill"><span class="flag">🇹🇷</span><span class="name">Turkish</span></div>
-      <div class="lang-pill"><span class="flag">🇸🇦</span><span class="name">Arabic</span></div>
-      <div class="lang-pill"><span class="flag">🇮🇳</span><span class="name">Hindi</span></div>
-      <div class="lang-pill"><span class="flag">🇹🇭</span><span class="name">Thai</span></div>
-      <div class="lang-pill"><span class="flag">🇻🇳</span><span class="name">Vietnamese</span></div>
-      <div class="lang-pill"><span class="flag">🇮🇩</span><span class="name">Indonesian</span></div>
-      <div class="lang-pill"><span class="flag">🇯🇵</span><span class="name">Japanese</span></div>
-      <div class="lang-pill"><span class="flag">🇰🇷</span><span class="name">Korean</span></div>
-      <div class="lang-pill"><span class="flag">🇨🇳</span><span class="name">Chinese (简)</span></div>
-      <div class="lang-pill"><span class="flag">🇹🇼</span><span class="name">Chinese (繁)</span></div>
+    <!-- Interactive try-it bar: hover a flag to see this phrase translated, click to jump to the live demo. -->
+    <div class="lang-try reveal" role="presentation">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input id="langTryInput" type="text" value="Can you send me the report before the meeting tomorrow?" spellcheck="false" aria-label="Sample phrase for the language preview" />
+      <span class="hint">Hover a flag</span>
     </div>
+
+    <div class="lang-grid reveal" id="langGrid"></div>
   </div>
 </section>
 
@@ -1272,6 +1320,178 @@
     };
 
     setInterval(swap, 4200);
+
+    // Expose a handle so the interactive lang-grid can jump the hero demo
+    window.__paraDemo = {
+      focusPair(srcCode, tgtCode) {
+        const idxFound = examples.findIndex(e => e.dstCode === tgtCode);
+        if (idxFound === -1) return;
+        idx = idxFound - 1;
+        swap();
+        document.getElementById('features')?.scrollIntoView({behavior:'instant', block:'nearest'});
+        document.querySelector('.hero-demo')?.scrollIntoView({behavior:'smooth', block:'center'});
+      }
+    };
+    // Tag examples with codes
+    examples.forEach(e => {
+      if (e.dstLang === 'Spanish') e.dstCode = 'es';
+      else if (e.dstLang === 'English') e.dstCode = 'en';
+      else if (e.dstLang === 'German') e.dstCode = 'de';
+    });
+  })();
+
+  // ========== Interactive language grid ==========
+  (function(){
+    const LANGS = [
+      { code: 'en', name: 'English',     flag: '\u{1F1FA}\u{1F1F8}', samples: {
+          default: 'Hello \u2014 welcome to Paralingo.',
+          report:  'Can you send me the report before the meeting tomorrow?'
+      }},
+      { code: 'es', name: 'Spanish',     flag: '\u{1F1EA}\u{1F1F8}', samples: {
+          default: 'Hola \u2014 bienvenido a Paralingo.',
+          report:  '\u00bfMe puedes enviar el informe antes de la reuni\u00f3n de ma\u00f1ana?'
+      }},
+      { code: 'fr', name: 'French',      flag: '\u{1F1EB}\u{1F1F7}', samples: {
+          default: 'Bonjour \u2014 bienvenue dans Paralingo.',
+          report:  'Peux-tu m\u2019envoyer le rapport avant la r\u00e9union de demain?'
+      }},
+      { code: 'de', name: 'German',      flag: '\u{1F1E9}\u{1F1EA}', samples: {
+          default: 'Hallo \u2014 willkommen bei Paralingo.',
+          report:  'Kannst du mir den Bericht vor dem morgigen Meeting senden?'
+      }},
+      { code: 'it', name: 'Italian',     flag: '\u{1F1EE}\u{1F1F9}', samples: {
+          default: 'Ciao \u2014 benvenuto in Paralingo.',
+          report:  'Puoi inviarmi il rapporto prima della riunione di domani?'
+      }},
+      { code: 'pt', name: 'Portuguese',  flag: '\u{1F1E7}\u{1F1F7}', samples: {
+          default: 'Ol\u00e1 \u2014 bem-vindo ao Paralingo.',
+          report:  'Voc\u00ea pode me enviar o relat\u00f3rio antes da reuni\u00e3o de amanh\u00e3?'
+      }},
+      { code: 'nl', name: 'Dutch',       flag: '\u{1F1F3}\u{1F1F1}', samples: {
+          default: 'Hallo \u2014 welkom bij Paralingo.',
+          report:  'Kun je me het rapport sturen v\u00f3\u00f3r de vergadering van morgen?'
+      }},
+      { code: 'pl', name: 'Polish',      flag: '\u{1F1F5}\u{1F1F1}', samples: {
+          default: 'Cze\u015b\u0107 \u2014 witaj w Paralingo.',
+          report:  'Czy mo\u017cesz przes\u0142a\u0107 mi raport przed jutrzejszym spotkaniem?'
+      }},
+      { code: 'ru', name: 'Russian',     flag: '\u{1F1F7}\u{1F1FA}', samples: {
+          default: '\u041f\u0440\u0438\u0432\u0435\u0442 \u2014 \u0434\u043e\u0431\u0440\u043e \u043f\u043e\u0436\u0430\u043b\u043e\u0432\u0430\u0442\u044c \u0432 Paralingo.',
+          report:  '\u041c\u043e\u0436\u0435\u0448\u044c \u043f\u0440\u0438\u0441\u043b\u0430\u0442\u044c \u043e\u0442\u0447\u0451\u0442 \u0434\u043e \u0437\u0430\u0432\u0442\u0440\u0430\u0448\u043d\u0435\u0439 \u0432\u0441\u0442\u0440\u0435\u0447\u0438?'
+      }},
+      { code: 'uk', name: 'Ukrainian',   flag: '\u{1F1FA}\u{1F1E6}', samples: {
+          default: '\u041f\u0440\u0438\u0432\u0456\u0442 \u2014 \u043b\u0430\u0441\u043a\u0430\u0432\u043e \u043f\u0440\u043e\u0441\u0438\u043c\u043e \u0434\u043e Paralingo.',
+          report:  '\u0427\u0438 \u043c\u043e\u0436\u0435\u0448 \u043d\u0430\u0434\u0456\u0441\u043b\u0430\u0442\u0438 \u0437\u0432\u0456\u0442 \u0434\u043e \u0437\u0430\u0432\u0442\u0440\u0430\u0448\u043d\u044c\u043e\u0457 \u0437\u0443\u0441\u0442\u0440\u0456\u0447\u0456?'
+      }},
+      { code: 'tr', name: 'Turkish',     flag: '\u{1F1F9}\u{1F1F7}', samples: {
+          default: 'Merhaba \u2014 Paralingo\u2019ya ho\u015f geldin.',
+          report:  'Yar\u0131nki toplant\u0131dan \u00f6nce raporu bana g\u00f6nderebilir misin?'
+      }},
+      { code: 'ar', name: 'Arabic',      flag: '\u{1F1F8}\u{1F1E6}', samples: {
+          default: '\u0645\u0631\u062d\u0628\u0627\u064b \u2014 \u0623\u0647\u0644\u0627\u064b \u0628\u0643 \u0641\u064a Paralingo.',
+          report:  '\u0647\u0644 \u064a\u0645\u0643\u0646\u0643 \u0625\u0631\u0633\u0627\u0644 \u0627\u0644\u062a\u0642\u0631\u064a\u0631 \u0642\u0628\u0644 \u0627\u062c\u062a\u0645\u0627\u0639 \u0627\u0644\u063a\u062f\u061f'
+      }},
+      { code: 'hi', name: 'Hindi',       flag: '\u{1F1EE}\u{1F1F3}', samples: {
+          default: '\u0928\u092e\u0938\u094d\u0924\u0947 \u2014 Paralingo \u092e\u0947\u0902 \u0906\u092a\u0915\u093e \u0938\u094d\u0935\u093e\u0917\u0924 \u0939\u0948\u0964',
+          report:  '\u0915\u094d\u092f\u093e \u0906\u092a \u092e\u0941\u091d\u0947 \u0915\u0932 \u0915\u0940 \u092e\u0940\u091f\u093f\u0902\u0917 \u0938\u0947 \u092a\u0939\u0932\u0947 \u0930\u093f\u092a\u094b\u0930\u094d\u091f \u092d\u0947\u091c \u0938\u0915\u0924\u0947 \u0939\u0948\u0902?'
+      }},
+      { code: 'th', name: 'Thai',        flag: '\u{1F1F9}\u{1F1ED}', samples: {
+          default: '\u0e2a\u0e27\u0e31\u0e2a\u0e14\u0e35 \u2014 \u0e22\u0e34\u0e19\u0e14\u0e35\u0e15\u0e49\u0e2d\u0e19\u0e23\u0e31\u0e1a\u0e2a\u0e39\u0e48 Paralingo',
+          report:  '\u0e0a\u0e48\u0e27\u0e22\u0e2a\u0e48\u0e07\u0e23\u0e32\u0e22\u0e07\u0e32\u0e19\u0e43\u0e2b\u0e49\u0e09\u0e31\u0e19\u0e01\u0e48\u0e2d\u0e19\u0e01\u0e32\u0e23\u0e1b\u0e23\u0e30\u0e0a\u0e38\u0e21\u0e1e\u0e23\u0e38\u0e48\u0e07\u0e19\u0e35\u0e49\u0e44\u0e14\u0e49\u0e44\u0e2b\u0e21?'
+      }},
+      { code: 'vi', name: 'Vietnamese',  flag: '\u{1F1FB}\u{1F1F3}', samples: {
+          default: 'Xin ch\u00e0o \u2014 ch\u00e0o m\u1eebng \u0111\u1ebfn v\u1edbi Paralingo.',
+          report:  'B\u1ea1n c\u00f3 th\u1ec3 g\u1eedi cho t\u00f4i b\u00e1o c\u00e1o tr\u01b0\u1edbc cu\u1ed9c h\u1ecdp ng\u00e0y mai kh\u00f4ng?'
+      }},
+      { code: 'id', name: 'Indonesian',  flag: '\u{1F1EE}\u{1F1E9}', samples: {
+          default: 'Halo \u2014 selamat datang di Paralingo.',
+          report:  'Bisakah kamu mengirim laporan sebelum rapat besok?'
+      }},
+      { code: 'ja', name: 'Japanese',    flag: '\u{1F1EF}\u{1F1F5}', samples: {
+          default: '\u3053\u3093\u306b\u3061\u306f \u2014 Paralingo \u3078\u3088\u3046\u3053\u305d\u3002',
+          report:  '\u660e\u65e5\u306e\u4f1a\u8b70\u306e\u524d\u306b\u30ec\u30dd\u30fc\u30c8\u3092\u9001\u3063\u3066\u3082\u3089\u3048\u307e\u3059\u304b\uff1f'
+      }},
+      { code: 'ko', name: 'Korean',      flag: '\u{1F1F0}\u{1F1F7}', samples: {
+          default: '\uc548\ub155\ud558\uc138\uc694 \u2014 Paralingo\uc5d0 \uc624\uc2e0 \uac83\uc744 \ud658\uc601\ud569\ub2c8\ub2e4.',
+          report:  '\ub0b4\uc77c \ud68c\uc758 \uc804\uc5d0 \ubcf4\uace0\uc11c\ub97c \ubcf4\ub0b4 \uc8fc\uc2e4 \uc218 \uc788\uc5b4\uc694?'
+      }},
+      { code: 'zh', name: 'Chinese (\u7B80)', flag: '\u{1F1E8}\u{1F1F3}', samples: {
+          default: '\u4f60\u597d \u2014 \u6b22\u8fce\u4f7f\u7528 Paralingo\u3002',
+          report:  '\u4f60\u80fd\u5728\u660e\u5929\u4f1a\u8bae\u4e4b\u524d\u628a\u62a5\u544a\u53d1\u7ed9\u6211\u5417\uff1f'
+      }},
+      { code: 'tw', name: 'Chinese (\u7E41)', flag: '\u{1F1F9}\u{1F1FC}', samples: {
+          default: '\u4f60\u597d \u2014 \u6b61\u8fce\u4f7f\u7528 Paralingo\u3002',
+          report:  '\u4f60\u80fd\u5728\u660e\u5929\u6703\u8b70\u4e4b\u524d\u628a\u5831\u544a\u50b3\u7d66\u6211\u55ce\uff1f'
+      }}
+    ];
+
+    const grid  = document.getElementById('langGrid');
+    const input = document.getElementById('langTryInput');
+    if (!grid) return;
+
+    const pickSample = (L) => {
+      const v = (input && input.value || '').toLowerCase();
+      if (v.includes('report') || v.includes('meeting') || v.length > 30) return L.samples.report;
+      return L.samples.default;
+    };
+
+    // Build pills
+    const html = LANGS.map((L, i) => `
+      <button class="lang-pill" type="button" data-code="${L.code}" aria-label="Preview ${L.name} translation">
+        <div class="face front">
+          <span class="flag" aria-hidden="true">${L.flag}</span>
+          <span class="name">${L.name}</span>
+        </div>
+        <div class="face back">
+          <span class="sample" data-role="sample">${pickSample(L)}</span>
+          <span class="tap">Click \u2192 Try</span>
+        </div>
+      </button>
+    `).join('');
+    grid.innerHTML = html;
+
+    // Re-fill samples whenever the user edits the input
+    const refill = () => {
+      grid.querySelectorAll('.lang-pill').forEach((pill, i) => {
+        const L = LANGS[i];
+        const s = pill.querySelector('[data-role=sample]');
+        if (s) s.textContent = pickSample(L);
+      });
+    };
+    input && input.addEventListener('input', refill);
+
+    // Click a pill -> jump hero demo to that target language
+    grid.addEventListener('click', (ev) => {
+      const btn = ev.target.closest('.lang-pill');
+      if (!btn) return;
+      const code = btn.dataset.code;
+      grid.querySelectorAll('.lang-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      if (window.__paraDemo) window.__paraDemo.focusPair('en', code);
+    });
+
+    // Subtle idle animation: pulse one random flag every 3s until user interacts.
+    let interacted = false;
+    const markInteracted = () => { interacted = true; };
+    grid.addEventListener('pointerenter', markInteracted, { once: true });
+    grid.addEventListener('click', markInteracted, { once: true });
+
+    (function idlePulse(){
+      if (interacted) return;
+      const pills = grid.querySelectorAll('.lang-pill');
+      if (pills.length) {
+        const p = pills[Math.floor(Math.random() * pills.length)];
+        const f = p.querySelector('.face.front');
+        if (f) {
+          f.animate([
+            { boxShadow: '0 0 0 rgba(139,92,246,0)' },
+            { boxShadow: '0 0 22px rgba(139,92,246,0.55)' },
+            { boxShadow: '0 0 0 rgba(139,92,246,0)' }
+          ], { duration: 1200, easing: 'ease-out' });
+        }
+      }
+      setTimeout(idlePulse, 2400);
+    })();
   })();
 </script>
 </body>
