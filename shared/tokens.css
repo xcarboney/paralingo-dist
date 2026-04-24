@@ -1,23 +1,23 @@
-/* Paralingo design tokens — dark-first (Midnight Emerald) */
+/* Paralingo design tokens — dark-first (Paravoice Violet) */
 :root {
-  /* Surfaces — slightly bluer than Paravoice */
-  --bg-0: #04070A;
-  --bg-1: #07101A;
-  --bg-2: #0E1A26;
-  --bg-3: #142635;
+  /* Surfaces — original Paravoice neutral black */
+  --bg-0: #06060A;
+  --bg-1: #0A0A12;
+  --bg-2: #12121C;
+  --bg-3: #1A1A26;
   --glass-fill: rgba(255, 255, 255, 0.04);
   --glass-stroke: rgba(255, 255, 255, 0.06);
   --glass-stroke-strong: rgba(255, 255, 255, 0.10);
 
-  /* Brand */
-  --emerald-500: #10B981;
-  --emerald-400: #34D399;
-  --emerald-300: #6EE7B7;
-  --cyan-500: #06B6D4;
-  --cyan-400: #22D3EE;
-  --cyan-300: #67E8F9;
-  --brand-gradient: linear-gradient(135deg, #10B981 0%, #06B6D4 100%);
-  --brand-glow: 0 0 40px rgba(16, 185, 129, 0.45), 0 0 80px rgba(34, 211, 238, 0.25);
+  /* Brand — violet + magenta (original Paravoice palette) */
+  --emerald-500: #8B5CF6;   /* semantic-kept name; value is now violet */
+  --emerald-400: #A78BFA;
+  --emerald-300: #C4B5FD;
+  --cyan-500:    #EC4899;   /* semantic-kept name; value is now magenta */
+  --cyan-400:    #F472B6;
+  --cyan-300:    #FBCFE8;
+  --brand-gradient: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+  --brand-glow: 0 0 40px rgba(139, 92, 246, 0.45), 0 0 80px rgba(236, 72, 153, 0.25);
 
   /* State */
   --live-green: #34D399;
@@ -74,8 +74,8 @@
   inset: -20% -10%;
   pointer-events: none;
   background:
-    radial-gradient(60% 40% at 15% 0%, rgba(16,185,129,0.22), transparent 60%),
-    radial-gradient(50% 40% at 90% 100%, rgba(34,211,238,0.14), transparent 60%);
+    radial-gradient(60% 40% at 15% 0%, rgba(139,92,246,0.22), transparent 60%),
+    radial-gradient(50% 40% at 90% 100%, rgba(236,72,153,0.14), transparent 60%);
   z-index: 0;
 }
 

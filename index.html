@@ -251,12 +251,37 @@
       min-height: 180px;
       position: relative;
       overflow: hidden;
+      transition: transform 500ms var(--ease-out);
     }
+    .demo-card::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, transparent, rgba(139,92,246,0.25), transparent 60%);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      opacity: 0; transition: opacity 400ms var(--ease-out);
+      pointer-events: none;
+    }
+    .hero-demo.swapping .demo-card .text,
+    .hero-demo.swapping .demo-card .label .flag,
+    .hero-demo.swapping .demo-card .label span:nth-child(2) {
+      opacity: 0; transform: translateY(6px);
+    }
+    .demo-card .text,
+    .demo-card .label .flag,
+    .demo-card .label span:nth-child(2) {
+      transition: opacity 280ms var(--ease-out), transform 280ms var(--ease-out);
+    }
+    .hero-demo.swapping .demo-card::after { opacity: 1; }
     .demo-card .label {
       display: flex; align-items: center; gap: 8px;
       font-family: var(--font-mono); font-size: 10px;
       letter-spacing: 0.18em; text-transform: uppercase;
       color: var(--text-lo); margin-bottom: 12px;
+      padding-right: 72px; /* reserve room for waveform or .live indicator */
     }
     .demo-card .label .flag { font-size: 14px; }
     .demo-card .label .live {
@@ -279,9 +304,10 @@
     }
     .demo-card .caret {
       display: inline-block; width: 2px; height: 18px;
-      background: var(--emerald-400);
+      background: linear-gradient(180deg, #8B5CF6, #EC4899);
       vertical-align: text-bottom; margin-left: 2px;
       animation: blink 1s steps(2) infinite;
+      box-shadow: 0 0 6px rgba(139,92,246,0.7);
     }
     @keyframes blink { 50% { opacity: 0; } }
 
@@ -296,14 +322,16 @@
     /* waveform bars inside the source card */
     .wave {
       position: absolute;
-      right: 18px; top: 22px;
-      display: flex; gap: 2px; height: 22px; align-items: center;
+      right: 22px; top: 18px;
+      display: flex; gap: 2px; height: 20px; align-items: center;
+      width: 52px; justify-content: flex-end;
     }
     .wave span {
       display: block; width: 2px; border-radius: 2px;
-      background: var(--emerald-400);
+      background: linear-gradient(180deg, #8B5CF6, #EC4899);
       animation: waveBar 700ms ease-in-out infinite;
       opacity: 0.85;
+      box-shadow: 0 0 4px rgba(139,92,246,0.55);
     }
     @keyframes waveBar {
       0%, 100% { height: 8%; }
@@ -380,7 +408,10 @@
 
     /* ===== Features grid ===== */
     section.features { padding: 100px 0 40px; position: relative; }
-    .fgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .fgrid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+      max-width: 1100px; margin: 0 auto;
+    }
     @media (max-width: 960px) { .fgrid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 360px) { .fgrid { grid-template-columns: 1fr; } }
 
@@ -392,7 +423,14 @@
       overflow: hidden;
       transition: transform var(--dur-fast), border-color var(--dur-fast);
     }
-    .fcard:hover { transform: translateY(-4px); border-color: rgba(16,185,129,0.35); }
+    .fcard { transition: transform 350ms var(--ease-out), border-color 350ms var(--ease-out), box-shadow 350ms var(--ease-out); }
+    .fcard:hover {
+      transform: translateY(-6px);
+      border-color: rgba(139,92,246,0.45);
+      box-shadow: 0 18px 40px rgba(139,92,246,0.18);
+    }
+    .fcard:hover .icon { transform: scale(1.08) rotate(-3deg); box-shadow: 0 10px 24px rgba(139,92,246,0.4); }
+    .fcard .icon { transition: transform 350ms var(--ease-out), box-shadow 350ms var(--ease-out); }
     .fcard::after {
       content:''; position:absolute; inset:0; pointer-events:none;
       background: radial-gradient(120px 80px at 100% 0%, rgba(16,185,129,0.18), transparent 70%);
@@ -497,7 +535,7 @@
     }
     .lock-viz .core {
       position: absolute; inset: 36%; border-radius: 50%;
-      background: radial-gradient(circle at 35% 30%, #22D3EE, #10B981 60%, #0F766E);
+      background: radial-gradient(circle at 35% 30%, #F472B6, #8B5CF6 60%, #5B21B6);
       box-shadow: 0 0 40px rgba(16,185,129,0.55), inset 0 -8px 16px rgba(0,0,0,0.3);
       display: flex; align-items: center; justify-content: center;
       animation: coreFloat 5s ease-in-out infinite;
@@ -637,6 +675,40 @@
     /* Reveal animations */
     .reveal { opacity: 1; transform: none; transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out); }
     .js-enabled .reveal:not(.in) { opacity: 0; transform: translateY(20px); }
+    .js-enabled .fgrid.reveal:not(.in) > .fcard,
+    .js-enabled .how-steps.reveal:not(.in) > .how-step,
+    .js-enabled .lang-grid.reveal:not(.in) > * {
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
+    }
+    .js-enabled .fgrid.reveal.in > .fcard,
+    .js-enabled .how-steps.reveal.in > .how-step,
+    .js-enabled .lang-grid.reveal.in > * {
+      opacity: 1; transform: none;
+    }
+    .fgrid > .fcard:nth-child(1)  { transition-delay: 40ms; }
+    .fgrid > .fcard:nth-child(2)  { transition-delay: 90ms; }
+    .fgrid > .fcard:nth-child(3)  { transition-delay: 140ms; }
+    .fgrid > .fcard:nth-child(4)  { transition-delay: 190ms; }
+    .fgrid > .fcard:nth-child(5)  { transition-delay: 240ms; }
+    .fgrid > .fcard:nth-child(6)  { transition-delay: 290ms; }
+    .fgrid > .fcard:nth-child(7)  { transition-delay: 340ms; }
+    .fgrid > .fcard:nth-child(8)  { transition-delay: 390ms; }
+    .fgrid > .fcard:nth-child(9)  { transition-delay: 440ms; }
+    .fgrid > .fcard:nth-child(10) { transition-delay: 490ms; }
+    .fgrid > .fcard:nth-child(11) { transition-delay: 540ms; }
+    .fgrid > .fcard:nth-child(12) { transition-delay: 590ms; }
+    .how-steps > .how-step:nth-child(1) { transition-delay: 60ms; }
+    .how-steps > .how-step:nth-child(2) { transition-delay: 180ms; }
+    .how-steps > .how-step:nth-child(3) { transition-delay: 300ms; }
+    @keyframes heroGradShift {
+      0%, 100% { filter: hue-rotate(0deg); }
+      50%      { filter: hue-rotate(-12deg); }
+    }
+    .hero h1 .grad { animation: heroGradShift 8s ease-in-out infinite; }
+    @media (prefers-reduced-motion: reduce) {
+      .hero h1 .grad { animation: none; }
+    }
 
     @media (prefers-reduced-motion: reduce) {
       *, ::before, ::after { animation: none !important; transition: none !important; }
@@ -797,7 +869,7 @@
     <h3 class="section-title">Three steps, <span class="grad">zero friction.</span></h3>
     <p class="section-sub">No app to switch to. No tab to open. Just speak and paste.</p>
 
-    <div class="how-steps">
+    <div class="how-steps reveal">
       <div class="how-step">
         <div class="num">1</div>
         <h4>Pick your pair</h4>
@@ -822,9 +894,9 @@
   <div class="container">
     <h2 class="eyebrow">Features</h2>
     <h3 class="section-title">Everything you'd expect. <span class="grad">Nothing you wouldn't.</span></h3>
-    <p class="section-sub">Small app, sharp focus. Every feature lives inside the speak-and-paste flow.</p>
+    <p class="section-sub">Small app, sharp focus. Every feature earns its place in the speak-and-paste loop.</p>
 
-    <div class="fgrid">
+    <div class="fgrid reveal">
       <div class="fcard">
         <div class="icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
@@ -844,7 +916,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4l7 7-7 7"/><path d="M21 11H3"/><path d="M10 20l-7-7 7-7"/><path d="M3 13h18"/></svg>
         </div>
         <h4>Auto-detect source</h4>
-        <p>WhisperKit tells Paralingo what language you spoke — no manual switching. Skip-when-same passes native-language dictation through untouched.</p>
+        <p>WhisperKit tells Paralingo what language you spoke — no manual switching. When you speak the target language already, Paralingo skips the round-trip and pastes as-is.</p>
       </div>
 
       <div class="fcard">
@@ -898,6 +970,22 @@
         <h4>Per-app language rules</h4>
         <p>WeChat in Chinese, WhatsApp in Spanish, Slack in English. Set a target language per app in Settings, Paralingo uses it automatically when that app is focused.</p>
       </div>
+
+      <div class="fcard">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10h10"/><path d="M12 5l-5 5 5 5"/><path d="M12 14l5-4-5-4" opacity="0"/><circle cx="12" cy="19" r="2.5"/><path d="M3 12a9 9 0 1 1 9 9"/></svg>
+        </div>
+        <h4>Voice-only mode</h4>
+        <p>One tap in the menu bar switches between Translate and Voice-only. Skip translation entirely when you just want pure dictation — same speed, same privacy.</p>
+      </div>
+
+      <div class="fcard">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3l4 4-4 4"/><path d="M20 7H4"/><path d="M8 21l-4-4 4-4"/><path d="M4 17h16"/></svg>
+        </div>
+        <h4>One-tap swap</h4>
+        <p>Flip source and target languages from the menu bar with a single click. Dictating in Spanish after answering in English? Swap and keep going — no settings detour.
+      </div>
     </div>
   </div>
 </section>
@@ -909,7 +997,7 @@
     <h3 class="section-title">Paste into the language <span class="grad">your audience actually reads.</span></h3>
     <p class="section-sub">Input via Whisper covers 99 source languages. Output via Apple Translation covers these 20, with more added every macOS release.</p>
 
-    <div class="lang-grid">
+    <div class="lang-grid reveal">
       <div class="lang-pill"><span class="flag">🇺🇸</span><span class="name">English</span></div>
       <div class="lang-pill"><span class="flag">🇪🇸</span><span class="name">Spanish</span></div>
       <div class="lang-pill"><span class="flag">🇫🇷</span><span class="name">French</span></div>
@@ -1026,10 +1114,11 @@
     <div class="price-box">
       <div class="price"><span class="grad">$0</span></div>
       <div class="desc">Early access · No account · No credit card</div>
-      <a class="btn-primary" href="#">
+      <a class="btn-primary" href="/Paralingo.dmg" download>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v14M5 12l7 7 7-7M4 21h16"/></svg>
-        Download for macOS
+        Download for macOS · v0.1.0
       </a>
+      <div style="margin-top:8px;font-size:12px;color:var(--text-lo);">Apple Silicon · macOS 26+ · 4.2 MB</div>
       <ul>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Unlimited dictations and translations</li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>All 20 target languages + 99 source</li>
@@ -1147,9 +1236,10 @@
       }
     ];
 
+    const heroDemo = document.querySelector('.hero-demo');
     const srcCard  = document.querySelector('.hero-demo .demo-card:first-of-type');
     const dstCard  = document.querySelector('.hero-demo .demo-card:last-of-type');
-    if (!srcCard || !dstCard) return;
+    if (!srcCard || !dstCard || !heroDemo) return;
 
     const srcFlagEl = srcCard.querySelector('.flag');
     const srcLangEl = srcCard.querySelector('.label span:nth-child(2)');
@@ -1169,10 +1259,19 @@
       dstTextEl.textContent = ex.dst;
     };
 
-    setInterval(() => {
-      idx = (idx + 1) % examples.length;
-      setExample(examples[idx]);
-    }, 4500);
+    const swap = () => {
+      heroDemo.classList.add('swapping');
+      setTimeout(() => {
+        idx = (idx + 1) % examples.length;
+        setExample(examples[idx]);
+        // small stagger: flash target card slightly after source re-fills
+        requestAnimationFrame(() => {
+          heroDemo.classList.remove('swapping');
+        });
+      }, 320);
+    };
+
+    setInterval(swap, 4200);
   })();
 </script>
 </body>
