@@ -904,10 +904,200 @@
 
       .price-box .price { font-size: 44px; }
     }
+    /* ===== PRO POLISH PASS ===== */
+
+    html { scroll-behavior: smooth; }
+
+    /* Top scroll-progress bar */
+    .scroll-progress {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: 2px; z-index: 1000; pointer-events: none;
+      background: linear-gradient(90deg, transparent, transparent);
+    }
+    .scroll-progress::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: var(--p, 0%);
+      background: linear-gradient(90deg, #8B5CF6, #EC4899);
+      box-shadow: 0 0 12px rgba(139,92,246,0.55);
+      transition: width 80ms linear;
+    }
+
+    /* Hero cursor spotlight glow */
+    .hero {
+      --mx: 50%;
+      --my: 30%;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(
+        420px 320px at var(--mx) var(--my),
+        rgba(167,139,250,0.20),
+        rgba(236,72,153,0.10) 35%,
+        transparent 65%
+      );
+      pointer-events: none;
+      z-index: 1;
+      mix-blend-mode: screen;
+      transition: background 280ms var(--ease-out);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero::after { display: none; }
+    }
+
+    /* Magnetic CTA */
+    .btn-primary {
+      will-change: transform;
+    }
+
+    /* Conic gradient hover border on feature cards */
+    .fcard {
+      position: relative;
+      isolation: isolate;
+    }
+    .fcard::before {
+      content: '';
+      position: absolute; inset: -1px;
+      border-radius: inherit;
+      background: conic-gradient(
+        from var(--ang, 0deg),
+        rgba(139,92,246,0.0),
+        rgba(139,92,246,0.65) 90deg,
+        rgba(236,72,153,0.65) 180deg,
+        rgba(139,92,246,0.0) 270deg
+      );
+      opacity: 0;
+      z-index: -1;
+      transition: opacity 350ms var(--ease-out);
+      filter: blur(8px);
+    }
+    .fcard:hover::before { opacity: 0.9; animation: conicSpin 6s linear infinite; }
+    @keyframes conicSpin {
+      to { --ang: 360deg; }
+    }
+    @property --ang { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+    @media (prefers-reduced-motion: reduce) {
+      .fcard:hover::before { animation: none; }
+    }
+
+    /* How-it-works connecting line */
+    .how-steps { position: relative; }
+    .how-steps::before {
+      content: '';
+      position: absolute;
+      left: 7%; right: 7%;
+      top: 60px; height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(139,92,246,0.45), rgba(236,72,153,0.45), transparent);
+      pointer-events: none;
+      transform: scaleX(var(--how-fill, 0));
+      transform-origin: left center;
+      transition: transform 800ms var(--ease-out);
+    }
+    @media (max-width: 820px) { .how-steps::before { display: none; } }
+    .how-step {
+      transition: transform 400ms var(--ease-out), border-color 400ms var(--ease-out), box-shadow 400ms var(--ease-out);
+    }
+    .how-step:hover {
+      transform: translateY(-4px);
+      border-color: rgba(139,92,246,0.45);
+      box-shadow: 0 14px 40px rgba(139,92,246,0.20);
+    }
+    .how-step .num { transition: transform 400ms var(--ease-out), box-shadow 400ms var(--ease-out); }
+    .how-step:hover .num { transform: scale(1.08) rotate(-4deg); box-shadow: 0 10px 24px rgba(236,72,153,0.45); }
+
+    /* Marquee strip below hero */
+    .marquee {
+      margin: 32px 0 0;
+      overflow: hidden;
+      mask: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+      -webkit-mask: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+      border-top: 1px solid var(--glass-stroke);
+      border-bottom: 1px solid var(--glass-stroke);
+      background: rgba(255,255,255,0.02);
+    }
+    .marquee-track {
+      display: inline-flex; gap: 56px; align-items: center;
+      padding: 16px 0; white-space: nowrap;
+      animation: marqueeScroll 36s linear infinite;
+    }
+    .marquee:hover .marquee-track { animation-play-state: paused; }
+    .marquee-item {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--text-mid); font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+    .marquee-item .dot {
+      width: 4px; height: 4px; border-radius: 50%;
+      background: linear-gradient(180deg, #8B5CF6, #EC4899);
+      box-shadow: 0 0 6px rgba(139,92,246,0.55);
+    }
+    .marquee-item strong {
+      color: var(--text-hi); font-weight: 700;
+      background: linear-gradient(90deg, #A78BFA, #F472B6);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    @keyframes marqueeScroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .marquee-track { animation: none; }
+    }
+
+    /* Hero subtle parallax for the demo card on scroll */
+    .hero-demo { transform: translateY(var(--demo-y, 0px)); will-change: transform; }
+
+    /* Section transition: subtle gradient bottom-stroke under each section */
+    section + section {
+      position: relative;
+    }
+    section + section::before {
+      content: '';
+      position: absolute;
+      left: 50%; top: 0;
+      width: 120px; height: 1px;
+      transform: translateX(-50%);
+      background: linear-gradient(90deg, transparent, rgba(139,92,246,0.5), transparent);
+      pointer-events: none;
+    }
+
+    /* Word-by-word hero reveal */
+    .hero h1 .word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: heroWord 800ms var(--ease-out) forwards;
+    }
+    @keyframes heroWord {
+      to { opacity: 1; transform: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero h1 .word { opacity: 1; transform: none; animation: none; }
+    }
+
+    /* Confetti container */
+    .confetti {
+      position: fixed; pointer-events: none;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      z-index: 9999; overflow: hidden;
+    }
+    .confetti span {
+      position: absolute; width: 8px; height: 14px;
+      border-radius: 1px;
+      will-change: transform, opacity;
+      animation: confettiFall 1800ms cubic-bezier(.2,.7,.3,1) forwards;
+    }
+    @keyframes confettiFall {
+      0%   { transform: translate3d(0,0,0) rotate(0deg); opacity: 1; }
+      100% { transform: translate3d(var(--cx, 0px), var(--cy, 600px), 0) rotate(540deg); opacity: 0; }
+    }
   </style>
 </head>
 
 <body>
+
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
 <!-- ================================== NAV ================================== -->
 <nav class="top">
@@ -976,6 +1166,29 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
         Apple Translation
       </span>
+    </div>
+
+    <!-- Marquee stats strip -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span class="marquee-item"><span class="dot"></span><strong>99</strong>&nbsp;input languages</span>
+        <span class="marquee-item"><span class="dot"></span><strong>20</strong>&nbsp;translation targets</span>
+        <span class="marquee-item"><span class="dot"></span><strong>0</strong>&nbsp;cloud calls</span>
+        <span class="marquee-item"><span class="dot"></span><strong>&lt;300ms</strong>&nbsp;dictation latency</span>
+        <span class="marquee-item"><span class="dot"></span><strong>4.2 MB</strong>&nbsp;app size</span>
+        <span class="marquee-item"><span class="dot"></span><strong>WhisperKit Large v3 Turbo</strong>&nbsp;on-device</span>
+        <span class="marquee-item"><span class="dot"></span><strong>Apple Translation</strong>&nbsp;framework</span>
+        <span class="marquee-item"><span class="dot"></span><strong>Per-app</strong>&nbsp;language rules</span>
+        <!-- duplicated for seamless loop -->
+        <span class="marquee-item"><span class="dot"></span><strong>99</strong>&nbsp;input languages</span>
+        <span class="marquee-item"><span class="dot"></span><strong>20</strong>&nbsp;translation targets</span>
+        <span class="marquee-item"><span class="dot"></span><strong>0</strong>&nbsp;cloud calls</span>
+        <span class="marquee-item"><span class="dot"></span><strong>&lt;300ms</strong>&nbsp;dictation latency</span>
+        <span class="marquee-item"><span class="dot"></span><strong>4.2 MB</strong>&nbsp;app size</span>
+        <span class="marquee-item"><span class="dot"></span><strong>WhisperKit Large v3 Turbo</strong>&nbsp;on-device</span>
+        <span class="marquee-item"><span class="dot"></span><strong>Apple Translation</strong>&nbsp;framework</span>
+        <span class="marquee-item"><span class="dot"></span><strong>Per-app</strong>&nbsp;language rules</span>
+      </div>
     </div>
 
     <!-- Live translation demo -->
@@ -1356,6 +1569,136 @@
     }, 4000);
   };
   if ('IntersectionObserver' in window) reveal();
+
+  // ===== PRO POLISH =====
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Scroll progress bar
+  (function(){
+    const bar = document.getElementById('scrollProgress');
+    if (!bar) return;
+    const onScroll = () => {
+      const h = document.documentElement;
+      const max = h.scrollHeight - h.clientHeight;
+      const p = max > 0 ? (h.scrollTop || document.body.scrollTop) / max : 0;
+      bar.style.setProperty('--p', (p * 100) + '%');
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+
+  // Hero spotlight cursor follow
+  if (!reduced) (function(){
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+    hero.addEventListener('pointermove', (e) => {
+      const r = hero.getBoundingClientRect();
+      const mx = ((e.clientX - r.left) / r.width) * 100;
+      const my = ((e.clientY - r.top) / r.height) * 100;
+      hero.style.setProperty('--mx', mx + '%');
+      hero.style.setProperty('--my', my + '%');
+    });
+  })();
+
+  // Magnetic primary CTA
+  if (!reduced) (function(){
+    document.querySelectorAll('.btn-primary').forEach(btn => {
+      btn.addEventListener('pointermove', (e) => {
+        const r = btn.getBoundingClientRect();
+        const x = e.clientX - r.left - r.width/2;
+        const y = e.clientY - r.top  - r.height/2;
+        btn.style.transform = `translate(${x*0.18}px, ${y*0.22}px)`;
+      });
+      btn.addEventListener('pointerleave', () => {
+        btn.style.transform = '';
+      });
+    });
+  })();
+
+  // Hero word-by-word reveal
+  (function(){
+    const h1 = document.querySelector('.hero h1');
+    if (!h1) return;
+    const html = h1.innerHTML;
+    // Split top-level text nodes into word spans, preserving inline children
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    const out = [];
+    let i = 0;
+    const wrapText = (text) => text.split(/(\s+)/).map(seg => {
+      if (/^\s+$/.test(seg)) return seg;
+      const delay = (i++ * 70) + 'ms';
+      return `<span class="word" style="animation-delay:${delay}">${seg}</span>`;
+    }).join('');
+    tmp.childNodes.forEach(n => {
+      if (n.nodeType === 3) out.push(wrapText(n.textContent));
+      else if (n.nodeType === 1) {
+        // Wrap inner text of inline child like .grad span
+        const inner = wrapText(n.textContent || '');
+        const cls = n.getAttribute('class') ? ` class="${n.getAttribute('class')}"` : '';
+        out.push(`<${n.tagName.toLowerCase()}${cls}>${inner}</${n.tagName.toLowerCase()}>`);
+      }
+    });
+    h1.innerHTML = out.join('');
+  })();
+
+  // Hero demo subtle parallax
+  if (!reduced) (function(){
+    const demo = document.querySelector('.hero-demo');
+    if (!demo) return;
+    let raf = 0;
+    const update = () => {
+      const y = Math.min(40, Math.max(-20, window.scrollY * 0.06));
+      demo.style.setProperty('--demo-y', `-${y}px`);
+      raf = 0;
+    };
+    window.addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(update); }, { passive: true });
+  })();
+
+  // How-it-works connector fill (driven by section visibility)
+  (function(){
+    const steps = document.querySelector('.how-steps');
+    if (!steps) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          steps.style.setProperty('--how-fill', '1');
+          io.disconnect();
+        }
+      });
+    }, { threshold: 0.4 });
+    io.observe(steps);
+  })();
+
+  // Confetti on download click
+  (function(){
+    const fire = (target) => {
+      if (reduced) return;
+      const root = document.createElement('div');
+      root.className = 'confetti';
+      document.body.appendChild(root);
+      const r = target.getBoundingClientRect();
+      const cx0 = r.left + r.width/2, cy0 = r.top + r.height/2;
+      const colors = ['#8B5CF6', '#A78BFA', '#EC4899', '#F472B6', '#C4B5FD'];
+      for (let i = 0; i < 36; i++) {
+        const s = document.createElement('span');
+        const dx = (Math.random() - 0.5) * 480;
+        const dy = (Math.random() * 0.5 + 0.4) * 540 * (Math.random() < 0.4 ? -1 : 1);
+        s.style.left = cx0 + 'px';
+        s.style.top = cy0 + 'px';
+        s.style.background = colors[i % colors.length];
+        s.style.setProperty('--cx', dx + 'px');
+        s.style.setProperty('--cy', dy + 'px');
+        s.style.animationDelay = (Math.random() * 80) + 'ms';
+        s.style.transform = `rotate(${Math.random()*360}deg)`;
+        root.appendChild(s);
+      }
+      setTimeout(() => root.remove(), 2200);
+    };
+    document.querySelectorAll('a[href$=".dmg"], a[href*="#download"]').forEach(a => {
+      a.addEventListener('click', () => fire(a));
+    });
+  })();
 
   // Hero demo — rotate through a few language pair examples
   (function() {
