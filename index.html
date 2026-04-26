@@ -193,10 +193,34 @@
     }
 
     .hero h1 {
-      font-size: clamp(40px, 5.6vw, 64px);
-      font-weight: 800; line-height: 1.04; letter-spacing: -0.04em;
-      margin: 0 auto 22px; max-width: 18ch;
+      font-size: clamp(40px, 5.2vw, 60px);
+      font-weight: 800; line-height: 1.06; letter-spacing: -0.04em;
+      margin: 0 auto 22px; max-width: 22ch;
     }
+    .hero h1 .keycap {
+      display: inline-block;
+      vertical-align: middle;
+      width: 1.05em; height: 1.05em; line-height: 0.98em;
+      border-radius: 0.18em;
+      background: linear-gradient(180deg, #2a2440, #181126);
+      border: 1px solid rgba(167,139,250,0.35);
+      box-shadow:
+        inset 0 -2px 0 rgba(0,0,0,0.6),
+        0 6px 16px rgba(139,92,246,0.45),
+        0 0 0 1px rgba(255,255,255,0.06);
+      font-size: 0.78em;
+      font-weight: 700;
+      text-align: center;
+      color: var(--text-hi);
+      margin: 0 0.04em;
+      transform: translateY(-0.04em);
+      animation: keycapPress 3.2s ease-in-out infinite;
+    }
+    @keyframes keycapPress {
+      0%, 60%, 100% { transform: translateY(-0.04em); box-shadow: inset 0 -2px 0 rgba(0,0,0,0.6), 0 6px 16px rgba(139,92,246,0.45), 0 0 0 1px rgba(255,255,255,0.06); }
+      72% { transform: translateY(0.06em); box-shadow: inset 0 -1px 0 rgba(0,0,0,0.6), 0 2px 6px rgba(139,92,246,0.30), 0 0 0 1px rgba(255,255,255,0.04); }
+    }
+    @media (prefers-reduced-motion: reduce) { .hero h1 .keycap { animation: none; } }
     .hero h1 .grad {
       background: linear-gradient(120deg, var(--emerald-400) 0%, var(--cyan-400) 55%, var(--emerald-300) 100%);
       background-size: 200% 100%;
@@ -250,6 +274,146 @@
     }
     .hero .meta span { display: inline-flex; align-items: center; gap: 6px; font-weight: 500; }
     .hero .meta svg { width: 14px; height: 14px; color: var(--emerald-400); }
+
+    /* ===== Hero feature chips ===== */
+    .hero-chips {
+      margin: 28px auto 0; max-width: 920px;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 720px) { .hero-chips { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+    .hchip {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid var(--glass-stroke);
+      backdrop-filter: blur(8px);
+      text-align: left;
+      transition: transform 320ms var(--ease-out), border-color 320ms var(--ease-out), background 320ms var(--ease-out);
+    }
+    .hchip:hover {
+      transform: translateY(-3px);
+      border-color: rgba(167,139,250,0.45);
+      background: rgba(139,92,246,0.06);
+    }
+    .hchip .ico {
+      width: 36px; height: 36px; flex: none;
+      border-radius: 10px;
+      display: grid; place-items: center;
+      background: linear-gradient(135deg, rgba(139,92,246,0.25), rgba(236,72,153,0.18));
+      border: 1px solid rgba(167,139,250,0.30);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04), 0 6px 16px rgba(139,92,246,0.20);
+      color: #F472B6;
+    }
+    .hchip .ico svg { width: 18px; height: 18px; }
+    .hchip .lbl {
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .hchip .lbl b {
+      font-size: 14px; font-weight: 700; color: var(--text-hi); line-height: 1.2;
+    }
+    .hchip .lbl span {
+      font-size: 12px; color: var(--text-lo); line-height: 1.3;
+    }
+
+    /* ===== Menu bar mock (hero visual anchor) ===== */
+    .hero-menubar {
+      margin: 36px auto 0; max-width: 760px;
+      display: flex; align-items: center; gap: 0;
+      padding: 6px 12px; border-radius: 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border: 1px solid var(--glass-stroke);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.45), 0 0 0 1px rgba(167,139,250,0.10) inset;
+      font-size: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-menubar::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(120deg, transparent, rgba(167,139,250,0.12), transparent);
+      transform: translateX(-100%);
+      animation: barShine 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes barShine { 50% { transform: translateX(100%); } 100% { transform: translateX(100%); } }
+    @media (prefers-reduced-motion: reduce) { .hero-menubar::before { animation: none; } }
+
+    .hero-menubar .mb-app-icon {
+      width: 22px; height: 22px; border-radius: 6px;
+      background: linear-gradient(135deg, #8B5CF6, #EC4899);
+      display: grid; place-items: center; flex: none;
+      box-shadow: 0 0 12px rgba(139,92,246,0.55);
+      color: white;
+    }
+    .hero-menubar .mb-app-icon svg { width: 12px; height: 12px; }
+    .hero-menubar .mb-divider {
+      width: 1px; height: 18px; margin: 0 12px;
+      background: rgba(255,255,255,0.10);
+    }
+    .hero-menubar .mb-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px; border-radius: 999px;
+      background: rgba(139,92,246,0.18);
+      border: 1px solid rgba(167,139,250,0.35);
+      color: var(--text-hi); font-weight: 600;
+    }
+    .hero-menubar .mb-pill .flag { font-size: 14px; }
+    .hero-menubar .mb-pill.dim {
+      background: rgba(255,255,255,0.04);
+      border-color: rgba(255,255,255,0.08);
+      color: var(--text-mid);
+    }
+    .hero-menubar .mb-arrow {
+      margin: 0 8px;
+      color: var(--text-lo);
+      animation: mbArrow 1.6s ease-in-out infinite;
+    }
+    @keyframes mbArrow {
+      0%, 100% { transform: translateX(0); opacity: 0.6; }
+      50%       { transform: translateX(3px); opacity: 1; }
+    }
+    .hero-menubar .mb-bar {
+      flex: 1;
+      display: flex; align-items: center; gap: 2px; height: 18px;
+      padding-left: 14px;
+    }
+    .hero-menubar .mb-bar i {
+      display: inline-block;
+      width: 2px; border-radius: 1px;
+      background: linear-gradient(180deg, #8B5CF6, #EC4899);
+      animation: mbWave 800ms ease-in-out infinite;
+      box-shadow: 0 0 4px rgba(139,92,246,0.55);
+    }
+    @keyframes mbWave {
+      0%, 100% { height: 14%; }
+      50%      { height: 92%; }
+    }
+    .hero-menubar .mb-bar i:nth-child(1)  { animation-delay: 0ms; }
+    .hero-menubar .mb-bar i:nth-child(2)  { animation-delay: 60ms; }
+    .hero-menubar .mb-bar i:nth-child(3)  { animation-delay: 120ms; }
+    .hero-menubar .mb-bar i:nth-child(4)  { animation-delay: 180ms; }
+    .hero-menubar .mb-bar i:nth-child(5)  { animation-delay: 240ms; }
+    .hero-menubar .mb-bar i:nth-child(6)  { animation-delay: 180ms; }
+    .hero-menubar .mb-bar i:nth-child(7)  { animation-delay: 120ms; }
+    .hero-menubar .mb-bar i:nth-child(8)  { animation-delay: 60ms; }
+    .hero-menubar .mb-bar i:nth-child(9)  { animation-delay: 0ms; }
+    .hero-menubar .mb-bar i:nth-child(10) { animation-delay: 60ms; }
+    .hero-menubar .mb-bar i:nth-child(11) { animation-delay: 120ms; }
+    .hero-menubar .mb-bar i:nth-child(12) { animation-delay: 180ms; }
+    .hero-menubar .mb-time {
+      font-family: var(--font-mono);
+      color: var(--text-lo); font-size: 11px; padding-left: 14px;
+      letter-spacing: 0.05em;
+    }
+    @media (max-width: 720px) {
+      .hero-menubar { padding: 5px 10px; font-size: 11px; }
+      .hero-menubar .mb-pill { padding: 3px 8px; }
+      .hero-menubar .mb-time { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) { .hero-menubar .mb-bar i { animation: none; height: 30%; } }
 
     /* ===== Hero demo (transcription+translation animation) ===== */
     .hero-demo {
@@ -1157,8 +1321,8 @@
       20 languages · Fully on-device · Built for macOS
     </div>
     <h1>
-      Speak any language.<br>
-      <span class="grad">Paste any language.</span>
+      Hold <span class="keycap" aria-label="Option key">⌥</span>. Speak.<br>
+      <span class="grad">Paste in any language.</span>
     </h1>
     <p class="sub">
       Hold a hotkey, speak, and the translated text pastes at your cursor — anywhere on macOS. Powered by WhisperKit and Apple Translation. 100% on-device. Zero cloud. Zero telemetry.
@@ -1190,6 +1354,38 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
         Apple Translation
       </span>
+    </div>
+
+    <!-- Hero feature chips -->
+    <div class="hero-chips">
+      <div class="hchip">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg></div>
+        <div class="lbl"><b>Hold to speak</b><span>Global hotkey, any app</span></div>
+      </div>
+      <div class="hchip">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a14 14 0 0 1 0 20"/><path d="M12 2a14 14 0 0 0 0 20"/></svg></div>
+        <div class="lbl"><b>20 → 99</b><span>Translate to 20, speak in 99</span></div>
+      </div>
+      <div class="hchip">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <div class="lbl"><b>100% on-device</b><span>No cloud, no account</span></div>
+      </div>
+      <div class="hchip">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div class="lbl"><b>&lt; 300 ms</b><span>Apple Silicon Neural Engine</span></div>
+      </div>
+    </div>
+
+    <!-- Menu bar mockup: shows what "using Paralingo" looks like -->
+    <div class="hero-menubar" aria-hidden="true">
+      <div class="mb-app-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg></div>
+      <span class="mb-pill dim"><span class="flag">🇺🇸</span>&nbsp;Auto</span>
+      <span class="mb-arrow">→</span>
+      <span class="mb-pill"><span class="flag">🇯🇵</span>&nbsp;Japanese</span>
+      <div class="mb-bar">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+      <span class="mb-time">REC · 0:01.4</span>
     </div>
 
     <!-- Marquee stats strip -->
