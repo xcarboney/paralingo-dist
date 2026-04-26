@@ -637,7 +637,104 @@
       position: relative;
       padding: 80px 0;
     }
-    /* ===== 3D language globe ===== */
+    /* ===== Language section: desktop = 3D sphere, mobile = cycling card + grid ===== */
+    .lang-mobile { display: none; max-width: 480px; margin: 0 auto; padding: 0 4px; }
+    .lang-desktop { display: block; }
+    @media (max-width: 720px) {
+      .lang-mobile { display: block; }
+      .lang-desktop { display: none; }
+    }
+
+    /* Showcase card */
+    .lm-card {
+      position: relative;
+      padding: 28px 22px 18px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(139,92,246,0.10), rgba(236,72,153,0.06));
+      border: 1px solid rgba(167,139,250,0.30);
+      box-shadow: 0 22px 60px rgba(139,92,246,0.18);
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .lm-card::before {
+      content: '';
+      position: absolute; inset: -30% -10% auto auto;
+      width: 70%; height: 140%;
+      background: radial-gradient(circle, rgba(236,72,153,0.20), transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .lm-card > * { position: relative; z-index: 1; }
+    .lm-flag {
+      font-size: 56px; line-height: 1;
+      filter: drop-shadow(0 8px 18px rgba(139,92,246,0.4));
+      transition: opacity 280ms var(--ease-out), transform 320ms var(--ease-out);
+    }
+    .lm-name {
+      margin-top: 12px;
+      font-family: var(--font-mono);
+      font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-lo);
+      transition: opacity 280ms var(--ease-out);
+    }
+    .lm-text {
+      margin-top: 10px;
+      font-size: 17px; font-weight: 600; line-height: 1.35;
+      color: var(--text-hi);
+      min-height: 70px;
+      transition: opacity 280ms var(--ease-out), transform 320ms var(--ease-out);
+    }
+    .lm-card.swapping .lm-flag,
+    .lm-card.swapping .lm-name,
+    .lm-card.swapping .lm-text {
+      opacity: 0; transform: translateY(8px);
+    }
+    .lm-progress {
+      margin-top: 16px;
+      height: 3px; border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      overflow: hidden;
+    }
+    .lm-progress > span {
+      display: block;
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, #8B5CF6, #EC4899);
+      box-shadow: 0 0 8px rgba(139,92,246,0.6);
+      transition: width 100ms linear;
+    }
+
+    /* Tappable flag-pill grid */
+    .lm-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+    .lm-pill {
+      display: flex; align-items: center; justify-content: center;
+      aspect-ratio: 1;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--glass-stroke);
+      font-size: 26px;
+      transition: transform 240ms var(--ease-out), border-color 240ms, background 240ms, box-shadow 240ms;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .lm-pill:active { transform: scale(0.92); }
+    .lm-pill.active {
+      background: linear-gradient(135deg, rgba(139,92,246,0.30), rgba(236,72,153,0.20));
+      border-color: rgba(236,72,153,0.55);
+      box-shadow: 0 0 0 1px rgba(236,72,153,0.55), 0 12px 28px rgba(236,72,153,0.30);
+      transform: scale(1.05);
+    }
+    @media (max-width: 360px) {
+      .lm-grid { grid-template-columns: repeat(4, 1fr); gap: 7px; }
+      .lm-pill { font-size: 22px; }
+    }
+
+    /* ===== 3D language globe (desktop only) ===== */
     .lang-stage {
       position: relative;
       width: 100%; max-width: 960px; margin: 0 auto;
@@ -1583,25 +1680,36 @@
     <h3 class="section-title">Paste into the language <span class="grad">your audience actually reads.</span></h3>
     <p class="section-sub">Input via Whisper covers 99 source languages. Output via Apple Translation covers these 20, with more added every macOS release.</p>
 
-    <!-- 3D language sphere: drag to rotate, click a flag to see the live translation. -->
-    <div class="lang-stage reveal" id="langStage" aria-label="Drag to rotate the language sphere; click a flag to preview a translation">
-      <div class="css3d" id="langCss3d"></div>
-    </div>
-
-    <div class="lang-readout" id="langReadout" aria-live="polite">
-      <span class="rflag" id="rflag">🇪🇸</span>
-      <div class="rlabel">
-        <span class="rname" id="rname">Spanish</span>
-        <span class="rtext" id="rtext">¡Pasa el ratón por los países!</span>
+    <!-- Desktop: drag-rotate 3D sphere. Mobile: auto-cycling showcase + tappable grid. -->
+    <div class="lang-desktop">
+      <div class="lang-stage reveal" id="langStage" aria-label="Drag to rotate the language sphere; click a flag to preview a translation">
+        <div class="css3d" id="langCss3d"></div>
       </div>
-      <button class="rtry" id="rtry" type="button">Try in demo ↑</button>
+      <div class="lang-readout" id="langReadout" aria-live="polite">
+        <span class="rflag" id="rflag">🇪🇸</span>
+        <div class="rlabel">
+          <span class="rname" id="rname">Spanish</span>
+          <span class="rtext" id="rtext">¡Pasa el ratón por los países!</span>
+        </div>
+        <button class="rtry" id="rtry" type="button">Try in demo ↑</button>
+      </div>
+      <p class="lang-hint">
+        <span class="kbd">drag</span> to rotate ·
+        <span class="kbd">hover</span> a flag to preview ·
+        <span class="kbd">click</span> to try it live
+      </p>
     </div>
 
-    <p class="lang-hint">
-      <span class="kbd">drag</span> to rotate ·
-      <span class="kbd">hover</span> a flag to preview ·
-      <span class="kbd">click</span> to try it live
-    </p>
+    <!-- Mobile-only: auto-cycling showcase card + flag-pill grid -->
+    <div class="lang-mobile reveal" id="langMobile" aria-label="Tap a flag to preview that language">
+      <div class="lm-card" id="lmCard">
+        <div class="lm-flag" id="lmFlag">🇪🇸</div>
+        <div class="lm-name" id="lmName">Spanish</div>
+        <div class="lm-text" id="lmText">¿Me puedes enviar el informe antes de la reunión de mañana?</div>
+        <div class="lm-progress"><span id="lmProgress"></span></div>
+      </div>
+      <div class="lm-grid" id="lmGrid"></div>
+    </div>
   </div>
 </section>
 
@@ -2097,6 +2205,84 @@
       }}
     ];
 
+    // ----- Mobile UI -----
+    (function buildMobile(){
+      const card    = document.getElementById('lmCard');
+      const flagEl  = document.getElementById('lmFlag');
+      const nameEl  = document.getElementById('lmName');
+      const textEl  = document.getElementById('lmText');
+      const grid    = document.getElementById('lmGrid');
+      const progEl  = document.getElementById('lmProgress');
+      if (!card || !grid) return;
+
+      // Build flag pills
+      grid.innerHTML = LANGS.map((L, i) =>
+        `<button class="lm-pill" type="button" data-i="${i}" aria-label="${L.name}">${L.flag}</button>`
+      ).join('');
+
+      let idx = 0;
+      const setIdx = (i, animate = true) => {
+        idx = (i + LANGS.length) % LANGS.length;
+        const L = LANGS[idx];
+        if (animate) {
+          card.classList.add('swapping');
+          setTimeout(() => {
+            flagEl.textContent = L.flag;
+            nameEl.textContent = L.name;
+            textEl.textContent = L.samples.report || L.samples.default;
+            grid.querySelectorAll('.lm-pill').forEach(p => p.classList.toggle('active', +p.dataset.i === idx));
+            requestAnimationFrame(() => card.classList.remove('swapping'));
+          }, 220);
+        } else {
+          flagEl.textContent = L.flag;
+          nameEl.textContent = L.name;
+          textEl.textContent = L.samples.report || L.samples.default;
+          grid.querySelectorAll('.lm-pill').forEach(p => p.classList.toggle('active', +p.dataset.i === idx));
+        }
+      };
+
+      // Initial state
+      setIdx(1, false); // start at Spanish
+
+      // Auto-cycle progress + advance
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let auto = !reduced;
+      const PERIOD = 3200;
+      let t0 = performance.now();
+      const tick = (now) => {
+        if (auto) {
+          const p = Math.min(1, (now - t0) / PERIOD);
+          if (progEl) progEl.style.width = (p * 100) + '%';
+          if (p >= 1) {
+            t0 = now;
+            setIdx(idx + 1);
+          }
+        }
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+
+      // Tap a pill → jump + pause auto for 5s
+      grid.addEventListener('click', (ev) => {
+        const btn = ev.target.closest('.lm-pill');
+        if (!btn) return;
+        const i = +btn.dataset.i;
+        setIdx(i);
+        auto = false;
+        t0 = performance.now();
+        if (progEl) progEl.style.width = '0%';
+        setTimeout(() => { auto = !reduced; t0 = performance.now(); }, 5500);
+      });
+
+      // Tap card text → jump to hero demo for that pair
+      card.addEventListener('click', (ev) => {
+        if (ev.target.closest('.lm-pill')) return;
+        const L = LANGS[idx];
+        if (window.__paraDemo) window.__paraDemo.focusPair('en', L.code);
+      });
+    })();
+
+    // ----- Desktop 3D sphere (only init on wide screens) -----
     const stage   = document.getElementById('langStage');
     const host    = document.getElementById('langCss3d');
     const readout = document.getElementById('langReadout');
@@ -2105,6 +2291,8 @@
     const rtext   = document.getElementById('rtext');
     const rtry    = document.getElementById('rtry');
     if (!stage || !host) return;
+    // Skip Three.js entirely on phones to save bandwidth + battery
+    if (window.matchMedia('(max-width: 720px)').matches) return;
 
     // Respect reduced-motion: fall back to a static centered flag grid.
     const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
