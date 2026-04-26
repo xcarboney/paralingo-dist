@@ -140,9 +140,28 @@
     /* ===== Hero ===== */
     .hero {
       position: relative;
-      padding: 80px 0 64px;
+      padding: 64px 0 56px;
       overflow: hidden;
     }
+    /* Floating brand orbs behind the hero for depth */
+    .hero .orbs {
+      position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    }
+    .hero .orb {
+      position: absolute;
+      width: 420px; height: 420px; border-radius: 50%;
+      filter: blur(80px); opacity: 0.55;
+      mix-blend-mode: screen;
+      animation: orbDrift 22s ease-in-out infinite alternate;
+    }
+    .hero .orb.a { background: radial-gradient(circle, rgba(139,92,246,0.55), transparent 60%); top: -120px; left: -10%; }
+    .hero .orb.b { background: radial-gradient(circle, rgba(236,72,153,0.45), transparent 60%); top: 30%; right: -8%; animation-delay: -7s; animation-duration: 28s; }
+    .hero .orb.c { background: radial-gradient(circle, rgba(167,139,250,0.32), transparent 60%); bottom: -60px; left: 30%; animation-delay: -14s; animation-duration: 26s; }
+    @keyframes orbDrift {
+      from { transform: translate3d(0,0,0) scale(1); }
+      to   { transform: translate3d(40px,30px,0) scale(1.08); }
+    }
+    @media (prefers-reduced-motion: reduce) { .hero .orb { animation: none; } }
     .hero::before {
       content: ''; position: absolute; inset: 0;
       background:
@@ -174,9 +193,9 @@
     }
 
     .hero h1 {
-      font-size: clamp(40px, 7vw, 76px);
-      font-weight: 800; line-height: 1.02; letter-spacing: -0.04em;
-      margin: 0 auto 24px; max-width: 14ch;
+      font-size: clamp(40px, 5.6vw, 64px);
+      font-weight: 800; line-height: 1.04; letter-spacing: -0.04em;
+      margin: 0 auto 22px; max-width: 18ch;
     }
     .hero h1 .grad {
       background: linear-gradient(120deg, var(--emerald-400) 0%, var(--cyan-400) 55%, var(--emerald-300) 100%);
@@ -1127,6 +1146,11 @@
 
 <!-- ================================== HERO ================================== -->
 <section class="hero">
+  <div class="orbs" aria-hidden="true">
+    <div class="orb a"></div>
+    <div class="orb b"></div>
+    <div class="orb c"></div>
+  </div>
   <div class="container inner">
     <div class="kicker">
       <span class="dot"></span>
@@ -1882,9 +1906,11 @@
     // Respect reduced-motion: fall back to a static centered flag grid.
     const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Load Three.js + CSS3DRenderer via ESM (no build step required)
-    const THREE_URL  = 'https://unpkg.com/three@0.160.0/build/three.module.js';
-    const CSS3D_URL  = 'https://unpkg.com/three@0.160.0/examples/jsm/renderers/CSS3DRenderer.js';
+    // Load Three.js via esm.sh — handles bare specifiers (`from 'three'`) automatically.
+    // unpkg works for the main module but CSS3DRenderer imports `from 'three'` which
+    // browsers can't resolve without an import map; esm.sh rewrites those imports.
+    const THREE_URL  = 'https://esm.sh/three@0.160.0';
+    const CSS3D_URL  = 'https://esm.sh/three@0.160.0/examples/jsm/renderers/CSS3DRenderer.js';
 
     (async () => {
       let THREE, CSS3DObject, CSS3DRenderer;
@@ -1894,7 +1920,6 @@
         CSS3DObject = css.CSS3DObject;
         CSS3DRenderer = css.CSS3DRenderer;
       } catch (err) {
-        // Fallback: plain flex grid
         console.warn('Three.js failed, falling back to static grid:', err);
         buildFallback();
         return;
