@@ -51,11 +51,39 @@
       <span class="eyebrow">Changelog</span>
       <h1>What's <span class="grad">new &amp; fixed.</span></h1>
       <p class="sub">Every release, every meaningful change. Shipping features and tightening screws.</p>
-      <div class="meta">Currently shipping · v0.1</div>
+      <div class="meta">Currently shipping · v0.1.2</div>
     </div>
 
     <div class="legal-body" style="padding-top: 24px;">
       <ul class="changelog-list">
+
+        <!-- v0.1.2 — icon + onboarding polish -->
+        <li class="changelog-entry">
+                    <div class="version">
+            <span class="v">v0.1.2</span>
+            <span class="date">April 26, 2026 · Polish</span>
+          </div>
+          <h2>New icon, cleaner onboarding.</h2>
+          <ul>
+            <li><span class="tag new">New</span><span>Brand-new Paralingo app icon — violet→magenta squircle with the P + speech-bubble + sound-wave glyph. Replaces the legacy Paravoice icon left over from the rebrand.</span></li>
+            <li><span class="tag fix">Fix</span><span>“RECOMMENDED” badge no longer wraps to two lines on the model picker during onboarding. All six model cards now line up with consistent height regardless of which one is the recommended pick.</span></li>
+            <li><span class="tag fix">Fix</span><span>Long model names (Large v3 Turbo) gracefully shrink/wrap inside their card instead of overflowing.</span></li>
+          </ul>
+        </li>
+
+        <!-- v0.1.1 — UI polish marathon -->
+        <li class="changelog-entry">
+                    <div class="version">
+            <span class="v">v0.1.1</span>
+            <span class="date">April 25, 2026 · UI polish</span>
+          </div>
+          <h2>Translate ↔ Voice-only mode.</h2>
+          <ul>
+            <li><span class="tag new">New</span><span>Segmented mode toggle at the top of the menu-bar dropdown. Switch between full Translate mode and Voice-only (transcription, no translation) with one tap. Persists across launches.</span></li>
+            <li><span class="tag fix">Fix</span><span>Settings: Translation, General, Hotkey, Paste, Model and Audio tabs all redrawn against the production design language. Tightened spacing, consistent type scale, native-feeling form controls.</span></li>
+            <li><span class="tag fix">Fix</span><span>Resolved Swift 6 MainActor crossings, deprecated <code>Text+</code> warnings, and an <code>OSAllocatedUnfairLock</code> isolation issue. 0 warnings in Release.</span></li>
+          </ul>
+        </li>
 
         <!-- v0.1 — tonight's marathon -->
         <li class="changelog-entry">
@@ -111,7 +139,6 @@
       <a href="privacy.html">Privacy</a>
       <a href="terms.html">Terms</a>
       <a href="changelog.html">Changelog</a>
-      <a href="https://paravoice.ai">Paravoice</a>
     </div>
   </div>
 </footer>
