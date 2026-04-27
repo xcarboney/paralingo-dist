@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Languages section — 3 mockups</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep:     #05080B;
+    --bg-mid:      #0B1117;
+    --text-hi:     #F1F5F9;
+    --text-mid:    #94A3B8;
+    --text-lo:     #64748B;
+    --violet-300:  #C4B5FD;
+    --violet-400:  #A78BFA;
+    --violet-500:  #8B5CF6;
+    --magenta-400: #F472B6;
+    --magenta-500: #EC4899;
+    --glass-fill:  rgba(255,255,255,0.04);
+    --glass-stroke: rgba(255,255,255,0.10);
+    --r-md: 14px;
+    --r-pill: 999px;
+    --font-mono: "JetBrains Mono", monospace;
+    --brand-gradient: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg-deep); color: var(--text-hi);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    background:
+      radial-gradient(900px 480px at 80% -10%, rgba(139,92,246,0.12), transparent 60%),
+      radial-gradient(700px 420px at -10% 30%, rgba(236,72,153,0.08), transparent 60%),
+      var(--bg-deep);
+  }
+  .page { max-width: 1180px; margin: 0 auto; padding: 64px 32px; }
+  .page > h1 { font-size: 24px; font-weight: 700; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .page > .crumb { color: var(--text-mid); font-size: 14px; margin-bottom: 56px; }
+
+  /* shared section header */
+  .opt {
+    margin: 0 0 92px;
+    padding-bottom: 60px;
+    border-bottom: 1px dashed var(--glass-stroke);
+  }
+  .opt-tag {
+    display: inline-block; padding: 5px 12px;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--violet-300);
+    background: rgba(139,92,246,0.10);
+    border: 1px solid rgba(139,92,246,0.25);
+    border-radius: var(--r-pill);
+    margin-bottom: 14px;
+  }
+  .opt h2 { font-size: 22px; font-weight: 700; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .opt p.note { color: var(--text-mid); font-size: 14px; margin: 0 0 28px; max-width: 620px; line-height: 1.6; }
+
+  .eyebrow {
+    display: inline-block; padding: 4px 12px;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--violet-300);
+    background: rgba(139,92,246,0.10);
+    border: 1px solid rgba(139,92,246,0.25);
+    border-radius: var(--r-pill);
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: clamp(28px, 4vw, 36px); font-weight: 800;
+    letter-spacing: -0.025em; margin: 0 0 14px; line-height: 1.15;
+  }
+  .grad {
+    background: var(--brand-gradient);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .section-sub {
+    color: var(--text-mid); font-size: 15px; line-height: 1.65;
+    margin: 0 0 32px; max-width: 640px;
+  }
+
+  /* ======================================= OPTION A — Quiet Grid ======================================= */
+  .a-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    max-width: 880px;
+  }
+  .a-chip {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 14px;
+    background: var(--glass-fill);
+    border: 1px solid var(--glass-stroke);
+    border-radius: var(--r-md);
+    transition: transform 180ms cubic-bezier(.2,.8,.2,1), border-color 180ms;
+    cursor: default;
+  }
+  .a-chip:hover {
+    transform: translateY(-2px);
+    border-color: rgba(167,139,250,0.45);
+  }
+  .a-chip .flag { font-size: 22px; line-height: 1; }
+  .a-chip .name { font-size: 13px; font-weight: 500; color: var(--text-hi); }
+
+  /* ======================================= OPTION B — Marquee ======================================= */
+  .b-marquee {
+    position: relative;
+    overflow: hidden;
+    padding: 24px 0;
+    margin: 0 -32px;
+    mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+  }
+  .b-track {
+    display: flex; gap: 14px;
+    width: max-content;
+    animation: bScroll 60s linear infinite;
+  }
+  .b-marquee:hover .b-track { animation-play-state: paused; }
+  @keyframes bScroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  .b-pill {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 10px 16px;
+    background: var(--glass-fill);
+    border: 1px solid var(--glass-stroke);
+    border-radius: var(--r-pill);
+    font-size: 13.5px; font-weight: 500; color: var(--text-hi);
+    white-space: nowrap;
+  }
+  .b-pill .flag { font-size: 18px; line-height: 1; }
+  .b-meta {
+    margin-top: 18px;
+    color: var(--text-lo);
+    font-size: 12.5px;
+    font-family: var(--font-mono);
+    letter-spacing: 0.06em;
+  }
+
+  /* ======================================= OPTION C — Typographic List ======================================= */
+  .c-stack {
+    max-width: 720px;
+  }
+  .c-cols {
+    column-count: 2;
+    column-gap: 56px;
+    margin: 0; padding: 0;
+    list-style: none;
+  }
+  .c-cols li {
+    padding: 9px 0;
+    color: var(--text-mid);
+    font-size: 15px;
+    line-height: 1.5;
+    border-bottom: 1px solid var(--glass-stroke);
+    break-inside: avoid;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .c-cols li .flag { font-size: 18px; line-height: 1; }
+  .c-cols li .name { color: var(--text-hi); font-weight: 500; }
+  .c-meta {
+    margin-top: 24px;
+    color: var(--text-lo);
+    font-size: 12.5px;
+    font-family: var(--font-mono);
+    letter-spacing: 0.06em;
+  }
+
+  @media (max-width: 720px) {
+    .c-cols { column-count: 1; }
+    .a-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .picker {
+    position: sticky; top: 0;
+    background: rgba(5,8,11,0.85);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    padding: 16px 32px;
+    margin: 0 -32px 56px;
+    border-bottom: 1px solid var(--glass-stroke);
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    z-index: 50;
+  }
+  .picker .pl { color: var(--text-mid); font-size: 13px; margin-right: 8px; }
+  .picker a {
+    padding: 6px 14px; border-radius: var(--r-pill);
+    background: var(--glass-fill); border: 1px solid var(--glass-stroke);
+    color: var(--text-hi); text-decoration: none;
+    font-size: 13px; font-weight: 500;
+  }
+  .picker a:hover { border-color: rgba(167,139,250,0.45); }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>Paralingo · Languages section mockups</h1>
+  <div class="crumb">Pick the one you like. Each replaces the current 3D sphere + auto-cycling card.</div>
+
+  <div class="picker">
+    <span class="pl">Jump to:</span>
+    <a href="#a">A — Quiet Grid</a>
+    <a href="#b">B — Marquee Strip</a>
+    <a href="#c">C — Typographic List</a>
+  </div>
+
+  <!-- ============================ OPTION A — QUIET GRID ============================ -->
+  <section class="opt" id="a">
+    <span class="opt-tag">Option A</span>
+    <h2>Quiet Grid</h2>
+    <p class="note">A simple 4–6 column grid of flag + name chips. Hover lifts the chip a touch and brightens its border. No 3D, no auto-cycling, no readout. Just the languages, presented honestly.</p>
+
+    <span class="eyebrow">20 target languages</span>
+    <h3 class="section-title">Paste into the language <span class="grad">your audience actually reads.</span></h3>
+    <p class="section-sub">Input via Whisper covers 99 source languages. Output via Apple Translation covers these 20, with more added every macOS release.</p>
+
+    <div class="a-grid" id="aGrid"></div>
+  </section>
+
+  <!-- ============================ OPTION B — MARQUEE ============================ -->
+  <section class="opt" id="b">
+    <span class="opt-tag">Option B</span>
+    <h2>Marquee Strip</h2>
+    <p class="note">A single horizontal auto-scrolling strip. Pauses on hover. Takes a fraction of the vertical space. Feels like a credit roll — calm, continuous, ambient.</p>
+
+    <span class="eyebrow">20 target languages</span>
+    <h3 class="section-title">Paste into the language <span class="grad">your audience actually reads.</span></h3>
+    <p class="section-sub">Input via Whisper covers 99 source languages. Output via Apple Translation covers these 20.</p>
+
+    <div class="b-marquee">
+      <div class="b-track" id="bTrack"></div>
+    </div>
+    <div class="b-meta">— Adding more with each macOS release —</div>
+  </section>
+
+  <!-- ============================ OPTION C — TYPOGRAPHIC LIST ============================ -->
+  <section class="opt" id="c">
+    <span class="opt-tag">Option C</span>
+    <h2>Typographic List</h2>
+    <p class="note">A two-column list with thin underlines between items. No interaction — just text and flags. Matches the Privacy / Pricing sections of the site stylistically.</p>
+
+    <span class="eyebrow">20 target languages</span>
+    <h3 class="section-title">Paste into the language <span class="grad">your audience actually reads.</span></h3>
+    <p class="section-sub">Input via Whisper covers 99 source languages. Output via Apple Translation covers these 20.</p>
+
+    <div class="c-stack">
+      <ul class="c-cols" id="cList"></ul>
+      <div class="c-meta">— Apple adds more with each macOS release —</div>
+    </div>
+  </section>
+</div>
+
+<script>
+  const langs = [
+    {flag:'🇺🇸', name:'English'},     {flag:'🇪🇸', name:'Spanish'},
+    {flag:'🇫🇷', name:'French'},      {flag:'🇩🇪', name:'German'},
+    {flag:'🇮🇹', name:'Italian'},     {flag:'🇵🇹', name:'Portuguese'},
+    {flag:'🇳🇱', name:'Dutch'},       {flag:'🇵🇱', name:'Polish'},
+    {flag:'🇷🇺', name:'Russian'},     {flag:'🇺🇦', name:'Ukrainian'},
+    {flag:'🇹🇷', name:'Turkish'},     {flag:'🇸🇦', name:'Arabic'},
+    {flag:'🇮🇳', name:'Hindi'},       {flag:'🇹🇭', name:'Thai'},
+    {flag:'🇻🇳', name:'Vietnamese'},  {flag:'🇮🇩', name:'Indonesian'},
+    {flag:'🇯🇵', name:'Japanese'},    {flag:'🇰🇷', name:'Korean'},
+    {flag:'🇨🇳', name:'Chinese (S)'}, {flag:'🇹🇼', name:'Chinese (T)'}
+  ];
+
+  // A — grid
+  const aGrid = document.getElementById('aGrid');
+  langs.forEach(l => {
+    const el = document.createElement('div');
+    el.className = 'a-chip';
+    el.innerHTML = `<span class="flag">${l.flag}</span><span class="name">${l.name}</span>`;
+    aGrid.appendChild(el);
+  });
+
+  // B — marquee (duplicate the list for seamless loop)
+  const bTrack = document.getElementById('bTrack');
+  const seq = [...langs, ...langs];
+  seq.forEach(l => {
+    const el = document.createElement('span');
+    el.className = 'b-pill';
+    el.innerHTML = `<span class="flag">${l.flag}</span>${l.name}`;
+    bTrack.appendChild(el);
+  });
+
+  // C — typographic list
+  const cList = document.getElementById('cList');
+  langs.forEach(l => {
+    const li = document.createElement('li');
+    li.innerHTML = `<span class="flag">${l.flag}</span><span class="name">${l.name}</span>`;
+    cList.appendChild(li);
+  });
+</script>
+</body>
+</html>
