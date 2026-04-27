@@ -633,215 +633,55 @@
     .fcard h4 { font-size: 17px; font-weight: 600; margin: 0 0 8px; }
     .fcard p { font-size: 14px; color: var(--text-mid); line-height: 1.6; margin: 0; }
 
-    /* ===== Language grid ===== */
+    /* ===== Language section (Marquee Strip) ===== */
     section.languages {
       position: relative;
       padding: 80px 0;
     }
-    /* ===== Language section: desktop = 3D sphere, mobile = cycling card + grid ===== */
-    .lang-mobile { display: none; max-width: 480px; margin: 0 auto; padding: 0 4px; }
-    .lang-desktop { display: block; }
-    @media (max-width: 720px) {
-      .lang-mobile { display: block; }
-      .lang-desktop { display: none; }
-    }
-
-    /* Showcase card */
-    .lm-card {
+    .lang-marquee {
       position: relative;
-      padding: 28px 22px 18px;
-      border-radius: 22px;
-      background: linear-gradient(180deg, rgba(139,92,246,0.10), rgba(236,72,153,0.06));
-      border: 1px solid rgba(167,139,250,0.30);
-      box-shadow: 0 22px 60px rgba(139,92,246,0.18);
-      backdrop-filter: blur(10px);
       overflow: hidden;
-      text-align: center;
-      margin-bottom: 20px;
+      padding: 24px 0;
+      margin-top: 28px;
+      mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
     }
-    .lm-card::before {
-      content: '';
-      position: absolute; inset: -30% -10% auto auto;
-      width: 70%; height: 140%;
-      background: radial-gradient(circle, rgba(236,72,153,0.20), transparent 60%);
-      pointer-events: none;
-      z-index: 0;
+    .lang-track {
+      display: flex; gap: 14px;
+      width: max-content;
+      animation: langScroll 60s linear infinite;
     }
-    .lm-card > * { position: relative; z-index: 1; }
-    .lm-flag {
-      font-size: 56px; line-height: 1;
-      filter: drop-shadow(0 8px 18px rgba(139,92,246,0.4));
-      transition: opacity 280ms var(--ease-out), transform 320ms var(--ease-out);
+    .lang-marquee:hover .lang-track,
+    .lang-marquee:focus-within .lang-track { animation-play-state: paused; }
+    @keyframes langScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
     }
-    .lm-name {
-      margin-top: 12px;
-      font-family: var(--font-mono);
-      font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--text-lo);
-      transition: opacity 280ms var(--ease-out);
-    }
-    .lm-text {
-      margin-top: 10px;
-      font-size: 17px; font-weight: 600; line-height: 1.35;
-      color: var(--text-hi);
-      min-height: 70px;
-      transition: opacity 280ms var(--ease-out), transform 320ms var(--ease-out);
-    }
-    .lm-card.swapping .lm-flag,
-    .lm-card.swapping .lm-name,
-    .lm-card.swapping .lm-text {
-      opacity: 0; transform: translateY(8px);
-    }
-    .lm-progress {
-      margin-top: 16px;
-      height: 3px; border-radius: 999px;
-      background: rgba(255,255,255,0.06);
-      overflow: hidden;
-    }
-    .lm-progress > span {
-      display: block;
-      height: 100%; width: 0%;
-      background: linear-gradient(90deg, #8B5CF6, #EC4899);
-      box-shadow: 0 0 8px rgba(139,92,246,0.6);
-      transition: width 100ms linear;
-    }
-
-    /* Tappable flag-pill grid */
-    .lm-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-    }
-    .lm-pill {
-      display: flex; align-items: center; justify-content: center;
-      aspect-ratio: 1;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.03);
+    .lang-pill {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 10px 16px;
+      background: var(--glass-fill);
       border: 1px solid var(--glass-stroke);
-      font-size: 26px;
-      transition: transform 240ms var(--ease-out), border-color 240ms, background 240ms, box-shadow 240ms;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
+      border-radius: var(--r-pill);
+      font-size: 13.5px; font-weight: 500; color: var(--text-hi);
+      white-space: nowrap;
+      transition: border-color 220ms var(--ease-out), background 220ms var(--ease-out);
     }
-    .lm-pill:active { transform: scale(0.92); }
-    .lm-pill.active {
-      background: linear-gradient(135deg, rgba(139,92,246,0.30), rgba(236,72,153,0.20));
-      border-color: rgba(236,72,153,0.55);
-      box-shadow: 0 0 0 1px rgba(236,72,153,0.55), 0 12px 28px rgba(236,72,153,0.30);
-      transform: scale(1.05);
+    .lang-pill:hover {
+      border-color: rgba(167,139,250,0.45);
+      background: rgba(255,255,255,0.05);
     }
-    @media (max-width: 360px) {
-      .lm-grid { grid-template-columns: repeat(4, 1fr); gap: 7px; }
-      .lm-pill { font-size: 22px; }
-    }
-
-    /* ===== 3D language globe (desktop only) ===== */
-    .lang-stage {
-      position: relative;
-      width: 100%; max-width: 960px; margin: 0 auto;
-      height: 560px;
-      cursor: grab;
-      user-select: none;
-      -webkit-user-select: none;
-    }
-    .lang-stage.dragging { cursor: grabbing; }
-    .lang-stage canvas { display: block; width: 100%; height: 100%; }
-    .lang-stage .css3d { position: absolute; inset: 0; pointer-events: none; }
-    .lang-stage .css3d > div { pointer-events: auto; }
-    .lang-stage::before {
-      content: '';
-      position: absolute; inset: -20% -10%;
-      background:
-        radial-gradient(40% 40% at 50% 50%, rgba(139,92,246,0.18), transparent 70%),
-        radial-gradient(30% 25% at 70% 60%, rgba(236,72,153,0.14), transparent 70%);
-      filter: blur(20px);
-      pointer-events: none;
-      z-index: 0;
-    }
-    .lang-node {
-      width: 112px; height: 112px;
-      border-radius: 18px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 10px 8px;
-      background: rgba(10,10,18,0.72);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.10);
-      cursor: pointer;
-      transition: border-color 240ms var(--ease-out), box-shadow 240ms var(--ease-out), background 240ms var(--ease-out);
-      will-change: transform;
-    }
-    .lang-node .flag { font-size: 34px; line-height: 1; display: block; }
-    .lang-node .name {
-      margin-top: 6px;
-      font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--text-mid); font-weight: 600; text-align: center;
-    }
-    .lang-node:hover,
-    .lang-node.hot {
-      border-color: rgba(167,139,250,0.6);
-      box-shadow: 0 12px 40px rgba(139,92,246,0.45), 0 0 0 1px rgba(236,72,153,0.3) inset;
-      background: rgba(24,16,40,0.85);
-    }
-    .lang-node.active {
-      border-color: rgba(236,72,153,0.8);
-      box-shadow: 0 0 0 2px rgba(236,72,153,0.55), 0 18px 60px rgba(236,72,153,0.45);
-    }
-
-    /* Readout card below the sphere */
-    .lang-readout {
-      max-width: 720px; margin: 20px auto 0;
-      padding: 18px 22px;
-      border-radius: 18px;
-      background: linear-gradient(180deg, rgba(139,92,246,0.10), rgba(236,72,153,0.06));
-      border: 1px solid rgba(139,92,246,0.25);
-      backdrop-filter: blur(8px);
-      display: grid; grid-template-columns: auto 1fr auto;
-      gap: 16px; align-items: center;
-      opacity: 0; transform: translateY(8px);
-      transition: opacity 350ms var(--ease-out), transform 350ms var(--ease-out);
-    }
-    .lang-readout.on { opacity: 1; transform: none; }
-    .lang-readout .rflag { font-size: 34px; }
-    .lang-readout .rtext {
-      font-size: 16px; font-weight: 600; color: var(--text-hi); line-height: 1.35;
-    }
-    .lang-readout .rname {
-      font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.18em;
-      text-transform: uppercase; color: var(--text-lo); margin-bottom: 2px;
-    }
-    .lang-readout .rlabel { display: flex; flex-direction: column; }
-    .lang-readout .rtry {
-      font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,0.85);
-      padding: 8px 14px; border-radius: 999px;
-      background: linear-gradient(135deg, #8B5CF6, #EC4899);
-      border: 0; cursor: pointer;
-      box-shadow: 0 8px 20px rgba(236,72,153,0.35);
-      transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
-    }
-    .lang-readout .rtry:hover { transform: translateY(-1px); box-shadow: 0 12px 28px rgba(236,72,153,0.5); }
-    .lang-readout .rtry:active { transform: translateY(0); }
-    .lang-hint {
+    .lang-pill .flag { font-size: 18px; line-height: 1; }
+    .lang-meta {
+      margin-top: 18px;
+      color: var(--text-lo);
+      font-size: 12.5px;
+      font-family: var(--font-mono);
+      letter-spacing: 0.06em;
       text-align: center;
-      margin-top: 16px;
-      font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em;
-      text-transform: uppercase; color: var(--text-lo);
     }
-    .lang-hint .kbd {
-      display: inline-block;
-      padding: 2px 8px;
-      margin: 0 4px;
-      border-radius: 6px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
-      color: var(--text-mid);
-      letter-spacing: 0;
-      font-size: 10px;
-    }
-    @media (max-width: 720px) {
-      .lang-stage { height: 480px; }
-      .lang-node { width: 92px; height: 92px; }
-      .lang-node .flag { font-size: 28px; }
+    @media (prefers-reduced-motion: reduce) {
+      .lang-track { animation: none; }
     }
 
     /* ===== Privacy section ===== */
@@ -1129,27 +969,11 @@
       .privacy-hero p { font-size: 15px; }
       .lock-viz { width: 200px !important; height: 200px !important; margin: 0 auto; }
 
-      /* 3D language sphere on mobile: smaller stage, smaller nodes */
+      /* Languages marquee on mobile: tighter padding, smaller pills */
       section.languages { padding: 64px 0 32px !important; }
-      .lang-stage { height: 460px; }
-      .lang-node { width: 84px; height: 84px; padding: 8px 6px; border-radius: 14px; }
-      .lang-node .flag { font-size: 28px; }
-      .lang-node .name { font-size: 9px; }
-      .lang-readout {
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: 10px;
-        padding: 16px 18px;
-        margin: 16px 16px 0;
-      }
-      .lang-readout .rflag { font-size: 40px; margin: 0 auto; }
-      .lang-readout .rlabel { align-items: center; }
-      .lang-readout .rtext { font-size: 15px; }
-      .lang-readout .rtry { justify-self: center; width: 100%; padding: 10px 14px; }
-      .lang-hint {
-        font-size: 10px; padding: 0 20px;
-        display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;
-      }
+      .lang-pill { padding: 9px 13px; font-size: 12.5px; }
+      .lang-pill .flag { font-size: 16px; }
+      .lang-track { gap: 10px; animation-duration: 50s; }
 
       section.pricing { padding: 72px 0 36px; }
       .price-box { padding: 28px 22px; }
@@ -1175,10 +999,8 @@
       .hero .meta { gap: 8px 14px; }
       .hero .meta span { font-size: 11px; }
 
-      .lang-stage { height: 420px; }
-      .lang-node { width: 72px; height: 72px; }
-      .lang-node .flag { font-size: 24px; }
-      .lang-node .name { display: none; }
+      .lang-pill { padding: 8px 12px; font-size: 12px; }
+      .lang-pill .flag { font-size: 15px; }
 
       .fgrid { gap: 12px; }
       .fcard { padding: 18px 16px; }
@@ -1681,38 +1503,13 @@
     <h3 class="section-title">Paste into the language <span class="grad">your audience actually reads.</span></h3>
     <p class="section-sub">Input via Whisper covers 99 source languages. Output via Apple Translation covers these 20, with more added every macOS release.</p>
 
-    <!-- Desktop: drag-rotate 3D sphere. Mobile: auto-cycling showcase + tappable grid. -->
-    <div class="lang-desktop">
-      <div class="lang-stage reveal" id="langStage" aria-label="Drag to rotate the language sphere; click a flag to preview a translation">
-        <div class="css3d" id="langCss3d"></div>
-      </div>
-      <div class="lang-readout" id="langReadout" aria-live="polite">
-        <span class="rflag" id="rflag">🇪🇸</span>
-        <div class="rlabel">
-          <span class="rname" id="rname">Spanish</span>
-          <span class="rtext" id="rtext">¡Pasa el ratón por los países!</span>
-        </div>
-        <button class="rtry" id="rtry" type="button">Try in demo ↑</button>
-      </div>
-      <p class="lang-hint">
-        <span class="kbd">drag</span> to rotate ·
-        <span class="kbd">hover</span> a flag to preview ·
-        <span class="kbd">click</span> to try it live
-      </p>
+    <div class="lang-marquee" aria-label="Supported target languages">
+      <div class="lang-track" id="langTrack" role="list"></div>
     </div>
-
-    <!-- Mobile-only: auto-cycling showcase card + flag-pill grid -->
-    <div class="lang-mobile reveal" id="langMobile" aria-label="Tap a flag to preview that language">
-      <div class="lm-card" id="lmCard">
-        <div class="lm-flag" id="lmFlag">🇪🇸</div>
-        <div class="lm-name" id="lmName">Spanish</div>
-        <div class="lm-text" id="lmText">¿Me puedes enviar el informe antes de la reunión de mañana?</div>
-        <div class="lm-progress"><span id="lmProgress"></span></div>
-      </div>
-      <div class="lm-grid" id="lmGrid"></div>
-    </div>
+    <p class="lang-meta">Apple ships more languages with each macOS release.</p>
   </div>
 </section>
+
 
 <!-- ================================== PRIVACY ================================== -->
 <section class="privacy" id="privacy">
@@ -2119,385 +1916,39 @@
     });
   })();
 
-  // ========== Interactive language SPHERE (Three.js CSS3DRenderer) ==========
+  // ========== Languages marquee strip ==========
   (function(){
-    const LANGS = [
-      { code: 'en', name: 'English',     flag: '\u{1F1FA}\u{1F1F8}', samples: {
-          default: 'Hello \u2014 welcome to Paralingo.',
-          report:  'Can you send me the report before the meeting tomorrow?'
-      }},
-      { code: 'es', name: 'Spanish',     flag: '\u{1F1EA}\u{1F1F8}', samples: {
-          default: 'Hola \u2014 bienvenido a Paralingo.',
-          report:  '\u00bfMe puedes enviar el informe antes de la reuni\u00f3n de ma\u00f1ana?'
-      }},
-      { code: 'fr', name: 'French',      flag: '\u{1F1EB}\u{1F1F7}', samples: {
-          default: 'Bonjour \u2014 bienvenue dans Paralingo.',
-          report:  'Peux-tu m\u2019envoyer le rapport avant la r\u00e9union de demain?'
-      }},
-      { code: 'de', name: 'German',      flag: '\u{1F1E9}\u{1F1EA}', samples: {
-          default: 'Hallo \u2014 willkommen bei Paralingo.',
-          report:  'Kannst du mir den Bericht vor dem morgigen Meeting senden?'
-      }},
-      { code: 'it', name: 'Italian',     flag: '\u{1F1EE}\u{1F1F9}', samples: {
-          default: 'Ciao \u2014 benvenuto in Paralingo.',
-          report:  'Puoi inviarmi il rapporto prima della riunione di domani?'
-      }},
-      { code: 'pt', name: 'Portuguese',  flag: '\u{1F1E7}\u{1F1F7}', samples: {
-          default: 'Ol\u00e1 \u2014 bem-vindo ao Paralingo.',
-          report:  'Voc\u00ea pode me enviar o relat\u00f3rio antes da reuni\u00e3o de amanh\u00e3?'
-      }},
-      { code: 'nl', name: 'Dutch',       flag: '\u{1F1F3}\u{1F1F1}', samples: {
-          default: 'Hallo \u2014 welkom bij Paralingo.',
-          report:  'Kun je me het rapport sturen v\u00f3\u00f3r de vergadering van morgen?'
-      }},
-      { code: 'pl', name: 'Polish',      flag: '\u{1F1F5}\u{1F1F1}', samples: {
-          default: 'Cze\u015b\u0107 \u2014 witaj w Paralingo.',
-          report:  'Czy mo\u017cesz przes\u0142a\u0107 mi raport przed jutrzejszym spotkaniem?'
-      }},
-      { code: 'ru', name: 'Russian',     flag: '\u{1F1F7}\u{1F1FA}', samples: {
-          default: '\u041f\u0440\u0438\u0432\u0435\u0442 \u2014 \u0434\u043e\u0431\u0440\u043e \u043f\u043e\u0436\u0430\u043b\u043e\u0432\u0430\u0442\u044c \u0432 Paralingo.',
-          report:  '\u041c\u043e\u0436\u0435\u0448\u044c \u043f\u0440\u0438\u0441\u043b\u0430\u0442\u044c \u043e\u0442\u0447\u0451\u0442 \u0434\u043e \u0437\u0430\u0432\u0442\u0440\u0430\u0448\u043d\u0435\u0439 \u0432\u0441\u0442\u0440\u0435\u0447\u0438?'
-      }},
-      { code: 'uk', name: 'Ukrainian',   flag: '\u{1F1FA}\u{1F1E6}', samples: {
-          default: '\u041f\u0440\u0438\u0432\u0456\u0442 \u2014 \u043b\u0430\u0441\u043a\u0430\u0432\u043e \u043f\u0440\u043e\u0441\u0438\u043c\u043e \u0434\u043e Paralingo.',
-          report:  '\u0427\u0438 \u043c\u043e\u0436\u0435\u0448 \u043d\u0430\u0434\u0456\u0441\u043b\u0430\u0442\u0438 \u0437\u0432\u0456\u0442 \u0434\u043e \u0437\u0430\u0432\u0442\u0440\u0430\u0448\u043d\u044c\u043e\u0457 \u0437\u0443\u0441\u0442\u0440\u0456\u0447\u0456?'
-      }},
-      { code: 'tr', name: 'Turkish',     flag: '\u{1F1F9}\u{1F1F7}', samples: {
-          default: 'Merhaba \u2014 Paralingo\u2019ya ho\u015f geldin.',
-          report:  'Yar\u0131nki toplant\u0131dan \u00f6nce raporu bana g\u00f6nderebilir misin?'
-      }},
-      { code: 'ar', name: 'Arabic',      flag: '\u{1F1F8}\u{1F1E6}', samples: {
-          default: '\u0645\u0631\u062d\u0628\u0627\u064b \u2014 \u0623\u0647\u0644\u0627\u064b \u0628\u0643 \u0641\u064a Paralingo.',
-          report:  '\u0647\u0644 \u064a\u0645\u0643\u0646\u0643 \u0625\u0631\u0633\u0627\u0644 \u0627\u0644\u062a\u0642\u0631\u064a\u0631 \u0642\u0628\u0644 \u0627\u062c\u062a\u0645\u0627\u0639 \u0627\u0644\u063a\u062f\u061f'
-      }},
-      { code: 'hi', name: 'Hindi',       flag: '\u{1F1EE}\u{1F1F3}', samples: {
-          default: '\u0928\u092e\u0938\u094d\u0924\u0947 \u2014 Paralingo \u092e\u0947\u0902 \u0906\u092a\u0915\u093e \u0938\u094d\u0935\u093e\u0917\u0924 \u0939\u0948\u0964',
-          report:  '\u0915\u094d\u092f\u093e \u0906\u092a \u092e\u0941\u091d\u0947 \u0915\u0932 \u0915\u0940 \u092e\u0940\u091f\u093f\u0902\u0917 \u0938\u0947 \u092a\u0939\u0932\u0947 \u0930\u093f\u092a\u094b\u0930\u094d\u091f \u092d\u0947\u091c \u0938\u0915\u0924\u0947 \u0939\u0948\u0902?'
-      }},
-      { code: 'th', name: 'Thai',        flag: '\u{1F1F9}\u{1F1ED}', samples: {
-          default: '\u0e2a\u0e27\u0e31\u0e2a\u0e14\u0e35 \u2014 \u0e22\u0e34\u0e19\u0e14\u0e35\u0e15\u0e49\u0e2d\u0e19\u0e23\u0e31\u0e1a\u0e2a\u0e39\u0e48 Paralingo',
-          report:  '\u0e0a\u0e48\u0e27\u0e22\u0e2a\u0e48\u0e07\u0e23\u0e32\u0e22\u0e07\u0e32\u0e19\u0e43\u0e2b\u0e49\u0e09\u0e31\u0e19\u0e01\u0e48\u0e2d\u0e19\u0e01\u0e32\u0e23\u0e1b\u0e23\u0e30\u0e0a\u0e38\u0e21\u0e1e\u0e23\u0e38\u0e48\u0e07\u0e19\u0e35\u0e49\u0e44\u0e14\u0e49\u0e44\u0e2b\u0e21?'
-      }},
-      { code: 'vi', name: 'Vietnamese',  flag: '\u{1F1FB}\u{1F1F3}', samples: {
-          default: 'Xin ch\u00e0o \u2014 ch\u00e0o m\u1eebng \u0111\u1ebfn v\u1edbi Paralingo.',
-          report:  'B\u1ea1n c\u00f3 th\u1ec3 g\u1eedi cho t\u00f4i b\u00e1o c\u00e1o tr\u01b0\u1edbc cu\u1ed9c h\u1ecdp ng\u00e0y mai kh\u00f4ng?'
-      }},
-      { code: 'id', name: 'Indonesian',  flag: '\u{1F1EE}\u{1F1E9}', samples: {
-          default: 'Halo \u2014 selamat datang di Paralingo.',
-          report:  'Bisakah kamu mengirim laporan sebelum rapat besok?'
-      }},
-      { code: 'ja', name: 'Japanese',    flag: '\u{1F1EF}\u{1F1F5}', samples: {
-          default: '\u3053\u3093\u306b\u3061\u306f \u2014 Paralingo \u3078\u3088\u3046\u3053\u305d\u3002',
-          report:  '\u660e\u65e5\u306e\u4f1a\u8b70\u306e\u524d\u306b\u30ec\u30dd\u30fc\u30c8\u3092\u9001\u3063\u3066\u3082\u3089\u3048\u307e\u3059\u304b\uff1f'
-      }},
-      { code: 'ko', name: 'Korean',      flag: '\u{1F1F0}\u{1F1F7}', samples: {
-          default: '\uc548\ub155\ud558\uc138\uc694 \u2014 Paralingo\uc5d0 \uc624\uc2e0 \uac83\uc744 \ud658\uc601\ud569\ub2c8\ub2e4.',
-          report:  '\ub0b4\uc77c \ud68c\uc758 \uc804\uc5d0 \ubcf4\uace0\uc11c\ub97c \ubcf4\ub0b4 \uc8fc\uc2e4 \uc218 \uc788\uc5b4\uc694?'
-      }},
-      { code: 'zh', name: 'Chinese (\u7B80)', flag: '\u{1F1E8}\u{1F1F3}', samples: {
-          default: '\u4f60\u597d \u2014 \u6b22\u8fce\u4f7f\u7528 Paralingo\u3002',
-          report:  '\u4f60\u80fd\u5728\u660e\u5929\u4f1a\u8bae\u4e4b\u524d\u628a\u62a5\u544a\u53d1\u7ed9\u6211\u5417\uff1f'
-      }},
-      { code: 'tw', name: 'Chinese (\u7E41)', flag: '\u{1F1F9}\u{1F1FC}', samples: {
-          default: '\u4f60\u597d \u2014 \u6b61\u8fce\u4f7f\u7528 Paralingo\u3002',
-          report:  '\u4f60\u80fd\u5728\u660e\u5929\u6703\u8b70\u4e4b\u524d\u628a\u5831\u544a\u50b3\u7d66\u6211\u55ce\uff1f'
-      }}
+    const langs = [
+      {flag:'\u{1F1FA}\u{1F1F8}', name:'English'},
+      {flag:'\u{1F1EA}\u{1F1F8}', name:'Spanish'},
+      {flag:'\u{1F1EB}\u{1F1F7}', name:'French'},
+      {flag:'\u{1F1E9}\u{1F1EA}', name:'German'},
+      {flag:'\u{1F1EE}\u{1F1F9}', name:'Italian'},
+      {flag:'\u{1F1F5}\u{1F1F9}', name:'Portuguese'},
+      {flag:'\u{1F1F3}\u{1F1F1}', name:'Dutch'},
+      {flag:'\u{1F1F5}\u{1F1F1}', name:'Polish'},
+      {flag:'\u{1F1F7}\u{1F1FA}', name:'Russian'},
+      {flag:'\u{1F1FA}\u{1F1E6}', name:'Ukrainian'},
+      {flag:'\u{1F1F9}\u{1F1F7}', name:'Turkish'},
+      {flag:'\u{1F1F8}\u{1F1E6}', name:'Arabic'},
+      {flag:'\u{1F1EE}\u{1F1F3}', name:'Hindi'},
+      {flag:'\u{1F1F9}\u{1F1ED}', name:'Thai'},
+      {flag:'\u{1F1FB}\u{1F1F3}', name:'Vietnamese'},
+      {flag:'\u{1F1EE}\u{1F1E9}', name:'Indonesian'},
+      {flag:'\u{1F1EF}\u{1F1F5}', name:'Japanese'},
+      {flag:'\u{1F1F0}\u{1F1F7}', name:'Korean'},
+      {flag:'\u{1F1E8}\u{1F1F3}', name:'Chinese (S)'},
+      {flag:'\u{1F1F9}\u{1F1FC}', name:'Chinese (T)'}
     ];
-
-    // ----- Mobile UI -----
-    (function buildMobile(){
-      const card    = document.getElementById('lmCard');
-      const flagEl  = document.getElementById('lmFlag');
-      const nameEl  = document.getElementById('lmName');
-      const textEl  = document.getElementById('lmText');
-      const grid    = document.getElementById('lmGrid');
-      const progEl  = document.getElementById('lmProgress');
-      if (!card || !grid) return;
-
-      // Build flag pills
-      grid.innerHTML = LANGS.map((L, i) =>
-        `<button class="lm-pill" type="button" data-i="${i}" aria-label="${L.name}">${L.flag}</button>`
-      ).join('');
-
-      let idx = 0;
-      const setIdx = (i, animate = true) => {
-        idx = (i + LANGS.length) % LANGS.length;
-        const L = LANGS[idx];
-        if (animate) {
-          card.classList.add('swapping');
-          setTimeout(() => {
-            flagEl.textContent = L.flag;
-            nameEl.textContent = L.name;
-            textEl.textContent = L.samples.report || L.samples.default;
-            grid.querySelectorAll('.lm-pill').forEach(p => p.classList.toggle('active', +p.dataset.i === idx));
-            requestAnimationFrame(() => card.classList.remove('swapping'));
-          }, 220);
-        } else {
-          flagEl.textContent = L.flag;
-          nameEl.textContent = L.name;
-          textEl.textContent = L.samples.report || L.samples.default;
-          grid.querySelectorAll('.lm-pill').forEach(p => p.classList.toggle('active', +p.dataset.i === idx));
-        }
-      };
-
-      // Initial state
-      setIdx(1, false); // start at Spanish
-
-      // Auto-cycle progress + advance
-      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      let auto = !reduced;
-      const PERIOD = 3200;
-      let t0 = performance.now();
-      const tick = (now) => {
-        if (auto) {
-          const p = Math.min(1, (now - t0) / PERIOD);
-          if (progEl) progEl.style.width = (p * 100) + '%';
-          if (p >= 1) {
-            t0 = now;
-            setIdx(idx + 1);
-          }
-        }
-        requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-
-      // Tap a pill → jump + pause auto for 5s
-      grid.addEventListener('click', (ev) => {
-        const btn = ev.target.closest('.lm-pill');
-        if (!btn) return;
-        const i = +btn.dataset.i;
-        setIdx(i);
-        auto = false;
-        t0 = performance.now();
-        if (progEl) progEl.style.width = '0%';
-        setTimeout(() => { auto = !reduced; t0 = performance.now(); }, 5500);
-      });
-
-      // Tap card text → jump to hero demo for that pair
-      card.addEventListener('click', (ev) => {
-        if (ev.target.closest('.lm-pill')) return;
-        const L = LANGS[idx];
-        if (window.__paraDemo) window.__paraDemo.focusPair('en', L.code);
-      });
-    })();
-
-    // ----- Desktop 3D sphere (only init on wide screens) -----
-    const stage   = document.getElementById('langStage');
-    const host    = document.getElementById('langCss3d');
-    const readout = document.getElementById('langReadout');
-    const rflag   = document.getElementById('rflag');
-    const rname   = document.getElementById('rname');
-    const rtext   = document.getElementById('rtext');
-    const rtry    = document.getElementById('rtry');
-    if (!stage || !host) return;
-    // Skip Three.js entirely on phones to save bandwidth + battery
-    if (window.matchMedia('(max-width: 720px)').matches) return;
-
-    // Respect reduced-motion: fall back to a static centered flag grid.
-    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    // Load Three.js via esm.sh — handles bare specifiers (`from 'three'`) automatically.
-    // unpkg works for the main module but CSS3DRenderer imports `from 'three'` which
-    // browsers can't resolve without an import map; esm.sh rewrites those imports.
-    const THREE_URL  = 'https://esm.sh/three@0.160.0';
-    const CSS3D_URL  = 'https://esm.sh/three@0.160.0/examples/jsm/renderers/CSS3DRenderer.js';
-
-    (async () => {
-      let THREE, CSS3DObject, CSS3DRenderer;
-      try {
-        THREE = await import(THREE_URL);
-        const css = await import(CSS3D_URL);
-        CSS3DObject = css.CSS3DObject;
-        CSS3DRenderer = css.CSS3DRenderer;
-      } catch (err) {
-        console.warn('Three.js failed, falling back to static grid:', err);
-        buildFallback();
-        return;
-      }
-
-      const W = () => stage.clientWidth;
-      const H = () => stage.clientHeight;
-
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(55, W()/H(), 0.1, 4000);
-      camera.position.z = 900;
-
-      const renderer = new CSS3DRenderer();
-      renderer.setSize(W(), H());
-      renderer.domElement.style.position = 'absolute';
-      renderer.domElement.style.inset = '0';
-      host.appendChild(renderer.domElement);
-
-      // Fibonacci sphere distribution so flags are evenly spaced
-      // Dynamic radius so the sphere scales nicely on phones.
-      const pickRadius = () => {
-        const w = W();
-        if (w <= 420) return 160;
-        if (w <= 720) return 210;
-        return 280;
-      };
-      let RADIUS = pickRadius();
-      const N = LANGS.length;
-      const golden = Math.PI * (3 - Math.sqrt(5));
-      const group = new THREE.Group();
-      scene.add(group);
-
-      const nodes = LANGS.map((L, i) => {
-        const y = 1 - (i / (N - 1)) * 2;      // -1..1
-        const r = Math.sqrt(1 - y*y);
-        const phi = golden * i;
-        const x = Math.cos(phi) * r;
-        const z = Math.sin(phi) * r;
-
-        const el = document.createElement('div');
-        el.className = 'lang-node';
-        el.dataset.code = L.code;
-        el.setAttribute('role', 'button');
-        el.setAttribute('aria-label', `${L.name} — click to preview translation`);
-        el.innerHTML = `<span class="flag" aria-hidden="true">${L.flag}</span><span class="name">${L.name}</span>`;
-
-        const obj = new CSS3DObject(el);
-        obj.position.set(x * RADIUS, y * RADIUS, z * RADIUS);
-        group.add(obj);
-
-        el.addEventListener('pointerenter', () => {
-          el.classList.add('hot');
-          showReadout(L);
-        });
-        el.addEventListener('pointerleave', () => el.classList.remove('hot'));
-        el.addEventListener('click', () => {
-          host.querySelectorAll('.lang-node.active').forEach(n => n.classList.remove('active'));
-          el.classList.add('active');
-          showReadout(L, true);
-          if (window.__paraDemo) window.__paraDemo.focusPair('en', L.code);
-        });
-
-        return { el, obj, lang: L };
-      });
-
-      // Auto-rotate + drag
-      let autoRot = reduceMotion ? 0 : 0.0018;   // rad / frame
-      let rotX = 0, rotY = 0;
-      let velX = 0, velY = autoRot;
-      let dragging = false;
-      let lastPointer = null;
-
-      stage.addEventListener('pointerdown', (ev) => {
-        dragging = true;
-        stage.classList.add('dragging');
-        lastPointer = { x: ev.clientX, y: ev.clientY };
-        stage.setPointerCapture(ev.pointerId);
-        autoRot = 0; // once user drags, stop auto-spinning
-      });
-      stage.addEventListener('pointermove', (ev) => {
-        if (!dragging || !lastPointer) return;
-        const dx = ev.clientX - lastPointer.x;
-        const dy = ev.clientY - lastPointer.y;
-        velY = dx * 0.005;
-        velX = dy * 0.005;
-        rotY += velY;
-        rotX += velX;
-        rotX = Math.max(-0.9, Math.min(0.9, rotX)); // clamp vertical
-        lastPointer = { x: ev.clientX, y: ev.clientY };
-      });
-      const stopDrag = () => { dragging = false; lastPointer = null; stage.classList.remove('dragging'); };
-      stage.addEventListener('pointerup', stopDrag);
-      stage.addEventListener('pointercancel', stopDrag);
-      stage.addEventListener('pointerleave', stopDrag);
-
-      // Frame loop
-      function tick() {
-        if (!dragging) {
-          rotY += autoRot;
-          // decay inertia
-          velY *= 0.96; velX *= 0.92;
-          if (Math.abs(velY) > 0.0005) rotY += velY;
-          if (Math.abs(velX) > 0.0005) {
-            rotX = Math.max(-0.9, Math.min(0.9, rotX + velX));
-          }
-        }
-        group.rotation.y = rotY;
-        group.rotation.x = rotX;
-
-        // Scale + fade nodes based on z-depth so farther flags recede
-        nodes.forEach(n => {
-          const worldPos = n.obj.position.clone().applyMatrix4(group.matrixWorld);
-          const z = worldPos.z; // -R..R after rotation
-          const t = (z + RADIUS) / (2 * RADIUS);  // 0..1, 1=front
-          const scale = 0.55 + t * 0.55;
-          n.el.style.transform = (n.el.style.transform || '') // CSS3DObject sets matrix on parent; we scale internal
-            .replace(/ scale\([^)]*\)/, '') + ''; // no-op; keep baseline
-          n.el.style.opacity = String(0.35 + t * 0.65);
-          n.el.style.filter = t < 0.35 ? 'blur(1.5px)' : 'none';
-          n.el.style.zIndex = String(Math.round(t * 100));
-          n.obj.scale.set(scale, scale, scale);
-        });
-
-        renderer.render(scene, camera);
-        requestAnimationFrame(tick);
-      }
-      tick();
-
-      // Resize — reflow sphere radius on breakpoint change
-      const onResize = () => {
-        camera.aspect = W()/H();
-        camera.updateProjectionMatrix();
-        renderer.setSize(W(), H());
-        const newR = pickRadius();
-        if (newR !== RADIUS) {
-          RADIUS = newR;
-          nodes.forEach((n, i) => {
-            const y = 1 - (i / (N - 1)) * 2;
-            const r = Math.sqrt(1 - y*y);
-            const phi = golden * i;
-            const x = Math.cos(phi) * r;
-            const z = Math.sin(phi) * r;
-            n.obj.position.set(x * RADIUS, y * RADIUS, z * RADIUS);
-          });
-        }
-      };
-      window.addEventListener('resize', onResize);
-
-      // Initial readout seeded with Spanish to demo
-      showReadout(LANGS.find(L => L.code === 'es'));
-
-      function showReadout(L, persist = false) {
-        if (!L || !readout) return;
-        rflag.textContent = L.flag;
-        rname.textContent = L.name;
-        rtext.textContent = L.samples.report || L.samples.default;
-        readout.classList.add('on');
-        readout.dataset.code = L.code;
-      }
-
-      rtry && rtry.addEventListener('click', () => {
-        const code = readout.dataset.code;
-        if (window.__paraDemo && code) window.__paraDemo.focusPair('en', code);
-      });
-    })();
-
-    // Fallback if Three.js fails to load (e.g. network blocked)
-    function buildFallback(){
-      host.innerHTML = `
-        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:40px 20px;max-width:760px;margin:0 auto;pointer-events:auto;">
-          ${LANGS.map(L => `
-            <div class="lang-node" data-code="${L.code}" style="position:static;width:auto;height:auto;">
-              <span class="flag">${L.flag}</span>
-              <span class="name">${L.name}</span>
-            </div>
-          `).join('')}
-        </div>`;
-      host.querySelectorAll('.lang-node').forEach(el => {
-        const L = LANGS.find(x => x.code === el.dataset.code);
-        el.addEventListener('click', () => {
-          if (window.__paraDemo) window.__paraDemo.focusPair('en', L.code);
-          document.getElementById('rflag').textContent = L.flag;
-          document.getElementById('rname').textContent = L.name;
-          document.getElementById('rtext').textContent = L.samples.report || L.samples.default;
-          document.getElementById('langReadout').classList.add('on');
-        });
-      });
-    }
+    const track = document.getElementById('langTrack');
+    if (!track) return;
+    [...langs, ...langs].forEach(l => {
+      const el = document.createElement('span');
+      el.className = 'lang-pill';
+      el.setAttribute('role', 'listitem');
+      el.innerHTML = `<span class="flag">${l.flag}</span>${l.name}`;
+      track.appendChild(el);
+    });
   })();
 </script>
 </body>
