@@ -20,7 +20,7 @@
   --brand-glow: 0 0 40px rgba(139, 92, 246, 0.45), 0 0 80px rgba(236, 72, 153, 0.25);
 
   /* State */
-  --live-green: #34D399;
+  --live-green: #A78BFA;   /* semantic-kept name; value is now violet (was emerald) */
   --amber: #F59E0B;
   --red-500: #EF4444;
   --violet-400: #A78BFA;
