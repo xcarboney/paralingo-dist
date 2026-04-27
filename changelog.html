@@ -54,11 +54,25 @@
       <span class="eyebrow">Changelog</span>
       <h1>What's <span class="grad">new &amp; fixed.</span></h1>
       <p class="sub">Every release, every meaningful change. Shipping features and tightening screws.</p>
-      <div class="meta">Currently shipping · v0.1.4</div>
+      <div class="meta">Currently shipping · v0.1.5</div>
     </div>
 
     <div class="legal-body" style="padding-top: 24px;">
       <ul class="changelog-list">
+
+        <!-- v0.1.5 — updater really works now -->
+        <li class="changelog-entry">
+                    <div class="version">
+            <span class="v">v0.1.5</span>
+            <span class="date">April 27, 2026 · Updater really works now</span>
+          </div>
+          <h2>Install update fixed.</h2>
+          <ul>
+            <li><span class="tag fix">Fix</span><span><strong>The big one:</strong> clicking “Install update” on v0.1.3 / v0.1.4 silently no-op'd after the first attempt because each retry mounted a duplicate DMG without unmounting the previous one. Fixed by force-detaching all stale Paralingo mounts before every attach.</span></li>
+            <li><span class="tag fix">Fix</span><span>Mount-point detection picks the volume whose name matches the app, not just the first one returned by hdiutil.</span></li>
+            <li><span class="tag fix">Fix</span><span>Any failure in download or install now surfaces a native macOS alert with the actual error message (and an “Open in Browser” fallback), instead of silently giving up.</span></li>
+          </ul>
+        </li>
 
         <!-- v0.1.4 — audit fixes -->
         <li class="changelog-entry">
