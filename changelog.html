@@ -54,11 +54,25 @@
       <span class="eyebrow">Changelog</span>
       <h1>What's <span class="grad">new &amp; fixed.</span></h1>
       <p class="sub">Every release, every meaningful change. Shipping features and tightening screws.</p>
-      <div class="meta">Currently shipping · v0.1.6</div>
+      <div class="meta">Currently shipping · v0.1.7</div>
     </div>
 
     <div class="legal-body" style="padding-top: 24px;">
       <ul class="changelog-list">
+
+        <!-- v0.1.7 — real mic-driven waveforms -->
+        <li class="changelog-entry">
+                    <div class="version">
+            <span class="v">v0.1.7</span>
+            <span class="date">May 27, 2026 · Real mic-driven waveforms</span>
+          </div>
+          <h2>The wave is actually your voice now.</h2>
+          <ul>
+            <li><span class="tag fix">Fix</span><span><strong>Soundwave overlay</strong> and the Pill overlay bars no longer wave around when you're silent. They were running synthetic sine animations with mic level only nudging the amplitude.</span></li>
+            <li><span class="tag new">New</span><span>Bars are now driven purely by recorded RMS, pushed into a scrolling ring buffer at 30 Hz. Silent = flat low bars, voice = real shape scrolling left to right like an oscilloscope tail.</span></li>
+            <li><span class="tag fix">Fix</span><span>Same fix for the waveform in the menu-bar dropdown.</span></li>
+          </ul>
+        </li>
 
         <!-- v0.1.6 — visible update progress -->
         <li class="changelog-entry">
