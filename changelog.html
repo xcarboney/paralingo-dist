@@ -54,11 +54,27 @@
       <span class="eyebrow">Changelog</span>
       <h1>What's <span class="grad">new &amp; fixed.</span></h1>
       <p class="sub">Every release, every meaningful change. Shipping features and tightening screws.</p>
-      <div class="meta">Currently shipping · v0.1.9</div>
+      <div class="meta">Currently shipping · v0.2.0</div>
     </div>
 
     <div class="legal-body" style="padding-top: 24px;">
       <ul class="changelog-list">
+
+        <!-- v0.2.0 — Pal 3D companion -->
+        <li class="changelog-entry">
+          <div class="version">
+            <span class="v">v0.2.0</span>
+            <span class="date">May 27, 2026 · Pal — 3D character companion</span>
+          </div>
+          <h2>Pal lives on your desktop.</h2>
+          <ul>
+            <li><span class="tag new">New</span><span><strong>Pal overlay style</strong>: a 280×320 3D character companion rendered with SceneKit. Soft lighting, real shadow, and his head tracks your cursor across the screen.</span></li>
+            <li><span class="tag new">New</span><span>Idle <em>breathing</em>, mic-level <em>body pulse</em> while listening, slow Y-axis <em>spin</em> while translating, happy <em>bounce</em> when text is pasted, and a quick <em>head shake</em> on errors.</span></li>
+            <li><span class="tag new">New</span><span>Bundled — no extra downloads. The character ships inside the app as a native Apple USDZ asset.</span></li>
+            <li><span class="tag improve">Improve</span><span>SceneKit-backed renderer runs outside the SwiftUI attribute graph, so the macOS 26 / Swift 6 TimelineView crash class can't touch it.</span></li>
+            <li><span class="tag improve">Improve</span><span>Pick Pal in <em>Settings → General → Overlay Style</em>.</span></li>
+          </ul>
+        </li>
 
         <!-- v0.1.9 — 5 new overlay styles -->
         <li class="changelog-entry">
